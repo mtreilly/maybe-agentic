@@ -85,13 +85,16 @@ Maintain our own skills in `skills/<name>/` and add `./skills/<name> <name>` to 
 ```sh
 ./setup.sh --update --profile all
 ./setup.sh --local --update
+./setup.sh --update --skill blast-radius  # refresh one skill for all default clients
 ```
 
 Updates are on demand; no automatic schedule is configured. Global installs track upstream provenance and content hashes in `~/.agents/.skill-lock.json`; local installs use `skills-lock.json` in this repository. Review changes to locally installed files and the project lockfile before committing an update. Updates and the final listing use the selected scope. Keep personal customizations separate from upstream-managed files, which can be replaced during updates.
 
-During updates, local skills are reinstalled from our maintained `skills/` directories, preserving the source files rather than replacing them with upstream content.
+Both setup and `--update` reinstall the selected entries from their declared sources, refreshing content, creating missing installs, and repairing selected client links. Local skills come from our maintained `skills/` directories; upstream skills come from their repositories. `--update` makes the refresh intent explicit; a normal setup run also refreshes content.
 
-`--agent` selects client links during installation and filters the final listing. Updates change the shared skill content for every linked client; newly selected clients need a normal setup run to create their links.
+Use repeated `--skill NAME` flags to refresh specific manifest entries. Without `--profile`, names are selected from the entire manifest; with profiles, names must belong to the combined profile selection. All names are validated before installation starts.
+
+`--agent` selects client links during setup and updates and filters the final listing. Refreshing shared skill content affects every client linked to that copy.
 
 ## Profiles and doctor
 

@@ -5,22 +5,24 @@ repo_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cli_version="1.7.0"
 agents=()
 profiles=()
+skills=()
 dry_run=false
 update=false
 scope=global
 
 usage() {
   cat <<'EOF'
-Usage: ./setup.sh [--global | --local] [--profile NAME]... [--agent NAME]... [--update] [--dry-run]
+Usage: ./setup.sh [--global | --local] [--profile NAME]... [--skill NAME]... [--agent NAME]... [--update] [--dry-run]
 
 Install selected skills globally for the current user using Vercel's skills CLI.
 Default agents: codex, claude-code, opencode, pi.
 
   --profile NAME  Select core (default), frontend, backend, research, or all. Repeat to combine.
+  --skill NAME  Select a manifest skill; repeat for several. Filters profiles when supplied.
   --agent NAME  Select an agent; repeat to select several.
   --global      Install, update, and list user-level skills (default).
   --local       Install, update, and list project-level skills in maybe-agentic.
-  --update      Update selected installed skills to the latest upstream content.
+  --update      Refresh selected skills from declared sources, including missing installs and client links.
   --dry-run     Print commands without installing or changing files.
   -h, --help    Show this help.
 
@@ -34,6 +36,11 @@ while (($#)); do
     --profile)
       if (($# < 2)); then printf "Missing name after --profile\n" >&2; exit 2; fi
       profiles+=(--profile "$2")
+      shift 2
+      ;;
+    --skill)
+      if (($# < 2)); then printf "Missing name after --skill\n" >&2; exit 2; fi
+      skills+=(--skill "$2")
       shift 2
       ;;
     --agent)
@@ -65,7 +72,7 @@ export DO_NOT_TRACK=1
 
 # Validate the entire selection before any CLI invocation; no partial installation
 # when a profile is malformed. Command substitution preserves parser exit status.
-selection="$(python3 -B "$repo_dir/scripts/catalog.py" "${profiles[@]}")"
+selection="$(python3 -B "$repo_dir/scripts/catalog.py" "${profiles[@]}" "${skills[@]}")"
 
 run() {
   if "$dry_run"; then
@@ -88,11 +95,11 @@ if ! "$dry_run"; then
 fi
 
 install_args=()
-update_args=(--project)
 if [[ "$scope" == global ]]; then
   install_args=(--global)
-  update_args=(--global)
 fi
+
+if "$update"; then printf 'Refreshing selected skills from declared sources.\n'; fi
 
 printf 'Skill source: %s\nInstallation scope: %s\n' "$repo_dir" "$scope"
 while read -r source skill extra; do
@@ -101,12 +108,9 @@ while read -r source skill extra; do
     printf 'Invalid skills.txt entry: expected SOURCE SKILL\n' >&2
     exit 2
   fi
-  if "$update" && [[ "$source" != ./* ]]; then
-    run npx --yes "skills@$cli_version" update "$skill" "${update_args[@]}" --yes
-  else
-    # Local skills are refreshed from our maintained source even during updates.
-    run npx --yes "skills@$cli_version" add "$source" --skill "$skill" --agent "${agents[@]}" "${install_args[@]}" --yes
-  fi
+  # Reinstall from the manifest so updates also repair links and install missing
+  # skills. Both modes refresh upstream content and our maintained local sources.
+  run npx --yes "skills@$cli_version" add "$source" --skill "$skill" --agent "${agents[@]}" "${install_args[@]}" --yes
 done <<< "$selection"
 
 run npx --yes "skills@$cli_version" list --agent "${agents[@]}" "${install_args[@]}"

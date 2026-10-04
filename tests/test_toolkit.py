@@ -132,6 +132,47 @@ with patch('pathlib.Path.home', return_value=Path({str(global_home)!r})):
         self.assertIn('cycle', broken.stderr)
         self.assertNotIn('npx', broken.stdout)
 
+    def test_setup_refreshes_selected_sources_and_links_without_consuming_manifest(self):
+        root = self.toolkit()
+        binary = self.root / 'bin'
+        binary.mkdir()
+        log = self.root / 'cli.jsonl'
+        # Exercise the real setup loop without network or modifying user installs.
+        stub = binary / 'npx'
+        stub.write_text(f"#!{sys.executable}\n" + """import json, os, sys
+with open(os.environ['SETUP_TEST_LOG'], 'a') as output:
+    output.write(json.dumps({'args': sys.argv[1:], 'stdin': sys.stdin.read()}) + '\\n')
+""")
+        stub.chmod(0o755)
+        env = {'PATH': str(binary) + os.pathsep + os.environ['PATH'], 'SETUP_TEST_LOG': str(log)}
+        result = self.command('bash', str(root / 'setup.sh'), '--update', '--skill', 'blast-radius',
+                              '--skill', 'animate', '--skill', 'blast-radius', '--agent', 'pi', env=env)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        calls = [json.loads(line) for line in log.read_text().splitlines()]
+        self.assertEqual(len(calls), 3)  # Two unique sources, then the listing.
+        self.assertEqual({call['args'][3] for call in calls[:2]},
+                         {'emilkowalski/skills', './skills/blast-radius'})
+        for call in calls[:2]:
+            self.assertEqual(call['args'][2], 'add')
+            self.assertIn('--global', call['args'])
+            self.assertEqual(call['args'][call['args'].index('--agent') + 1], 'pi')
+            self.assertEqual(call['stdin'], '')
+        self.assertEqual(calls[-1]['args'][2], 'list')
+        before = log.read_bytes()
+        rejected = self.command('bash', str(root / 'setup.sh'), '--update', '--profile', 'core',
+                                '--skill', 'blast-radius', env=env)
+        self.assertNotEqual(rejected.returncode, 0)
+        self.assertEqual(log.read_bytes(), before)
+        missing = self.command('bash', str(root / 'setup.sh'), '--skill', 'does-not-exist', env=env)
+        self.assertNotEqual(missing.returncode, 0)
+        self.assertEqual(log.read_bytes(), before)
+        local = self.command('bash', str(root / 'setup.sh'), '--local', '--update',
+                             '--skill', 'blast-radius', env=env)
+        self.assertEqual(local.returncode, 0, local.stderr)
+        calls = [json.loads(line) for line in log.read_text().splitlines()]
+        self.assertNotIn('--global', calls[-2]['args'])
+        self.assertIn('./skills/blast-radius', calls[-2]['args'])
+
     def prepare(self, case, variant='baseline'):
         output = self.root / f'{case}-{variant}'
         result = self.command(sys.executable, '-B', str(ROOT / 'evals/run.py'), 'prepare', '--case', case, '--variant', variant, '--output', str(output))

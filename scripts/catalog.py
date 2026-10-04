@@ -74,9 +74,16 @@ def select(profiles, root=ROOT):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile', action='append', default=[])
+    parser.add_argument('--skill', action='append', default=[])
     args = parser.parse_args()
     try:
-        for name, source in select(args.profile).items():
+        entries = select(args.profile) if args.profile or not args.skill else manifest()
+        if args.skill:
+            unknown = set(args.skill) - entries.keys()
+            if unknown:
+                raise ValueError('skills absent from selected profiles or manifest: ' + ', '.join(sorted(unknown)))
+            entries = {name: source for name, source in entries.items() if name in args.skill}
+        for name, source in entries.items():
             print(source, name)
     except (ValueError, OSError) as error:
         parser.exit(2, f'catalog: {error}\n')
