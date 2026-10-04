@@ -1,0 +1,12 @@
+{
+  "description": "Core plus architecture and contract integrity.",
+  "extends": [
+    "core"
+  ],
+  "skills": [
+    "architecture-guardrails",
+    "artifact-integrity",
+    "blast-radius",
+    "benchmark-checklist"
+  ]
+}

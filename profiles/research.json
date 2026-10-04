@@ -1,0 +1,13 @@
+{
+  "description": "Core plus evidence, explanation, and writing.",
+  "extends": [
+    "core"
+  ],
+  "skills": [
+    "how",
+    "why",
+    "show-me-your-work",
+    "reflect",
+    "deslop-writing"
+  ]
+}

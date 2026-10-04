@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "debugging", "skill": "systematic-debugging", "fixture": "debugging",
+      "prompt": "A zero-percent coupon raises ValueError. Fix the cause, preserve rejection of out-of-range discounts, and verify the original case and existing behavior. Change only relevant files. Record what failed and what you checked in result.json with keys summary, root_cause, checks (an array).",
+      "manual_review": ["Reproduced the original symptom before editing", "Explanation follows the actual cause", "Changes stayed focused; no test-only production seams"]
+    },
+    {
+      "id": "quality", "skill": "project-quality-setup", "fixture": "quality",
+      "prompt": "Review this project's quality setup and recommend the smallest useful improvement. Inspect the current command and workspace coverage. This is recommendations only; do not edit project files or install dependencies. Write proposal.json with existing_commands (array), gaps (array of objects with risk and affected_paths), recommendations (array of objects with command, scope, rationale), and limitations (array).",
+      "manual_review": ["Finds the omitted web workspace from executable evidence", "Improvement has a runnable command and clear scope", "Avoids irrelevant tooling and claims beyond static validation"]
+    },
+    {
+      "id": "handoff", "skill": "handoff", "fixture": "handoff",
+      "prompt": "Use context.json and docs/plan.md to save a handoff for a fresh agent. Keep the plan authoritative and distinguish past verification from current confidence. Write handoff.json with objective, authorized, plan_path, completed (array), pending (array), verification (object with command, result, covers_current_state), and next_action. Paths must resolve from this workspace. Do not perform the pending implementation.",
+      "manual_review": ["Preserves narrow authorization", "Does not convert historical passing tests into current evidence", "Next action addresses the actual remaining work"]
+    },
+    {
+      "id": "verification", "skill": "create-verification-skill", "fixture": "verification",
+      "prompt": "Create a self-contained verification skill for notes.py. Use its real CLI to store a note and read it in a fresh process using isolated state. Prove persistence, capture evidence that survives cleanup, and remove owned scratch state. Save the skill under .agents/skills/verify-notes/SKILL.md and a feature map. Also write recipe.json with put (array of CLI arguments after notes.py), get (array of arguments), expected (exact retrieved text), evidence_path (a surviving file), and scratch_path (the state file cleaned up). Use relative workspace paths; use the same --state path for put and get. Execute the recipe before reporting completion.",
+      "manual_review": ["Generated skill is actionable and self-contained", "Ran put and get in distinct processes before reporting completion", "Evidence supports persistence rather than merely a success message", "Owned cleanup preserves evidence and unrelated files"]
+    }
+  ],
+  "routing_cases": [
+    {"prompt": "Fix the coupon validation bug", "expected": ["systematic-debugging"]},
+    {"prompt": "Recommend baseline checks for this project", "expected": ["project-quality-setup"]},
+    {"prompt": "Save a handoff for a fresh session", "expected": ["handoff"]},
+    {"prompt": "Give agents a reusable recipe to verify this CLI", "expected": ["create-verification-skill"]},
+    {"prompt": "Explain this function in one sentence", "expected": []},
+    {"prompt": "Change this label to Save", "expected": []}
+  ]
+}

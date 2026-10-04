@@ -66,12 +66,12 @@
       "computedHash": "3c38e15c684cfdb3a03be5e4b43489cd0054ba711bfa847b5d4bdbb56b469cb9"
     },
     "create-verification-skill": {
-      "source": "./skills",
+      "source": "./skills/create-verification-skill",
       "sourceType": "local",
       "computedHash": "9032c3e6bdd8cb6f4e6bc0217b1f0ffb2318f760e175a694bbd7d6ade833d24c"
     },
     "deslop-code": {
-      "source": "./skills",
+      "source": "./skills/deslop-code",
       "sourceType": "local",
       "computedHash": "c08f504eb454ed6d7794efe99616a4b182f1cd6e9be14aedfab9d72fec508136"
     },
@@ -109,7 +109,7 @@
       "computedHash": "524ea241e41d58bbdd8e288700fe24f5725e2a2f3ae7186ad7cebf9055058356"
     },
     "interrogate": {
-      "source": "./skills",
+      "source": "./skills/interrogate",
       "sourceType": "local",
       "computedHash": "b506508fe3c2a655394fffdca078d27597cad169b284512c4e918c6f60f5a4cd"
     },
@@ -130,7 +130,7 @@
       "computedHash": "cf811ac862826e9ea44be26a98d60a91d67676c2e867f29ed25de1b2317a9c27"
     },
     "project-quality-setup": {
-      "source": "./skills",
+      "source": "./skills/project-quality-setup",
       "sourceType": "local",
       "computedHash": "9d4faf9f4c75f348dadc6c5556d17cc327f54a8ff5fdcfa72f74b883a90fac2e"
     },
@@ -141,7 +141,7 @@
       "computedHash": "77be567d8c946608fdd15e61b62ab383cdf289a194dce2479828b7eda860d3ba"
     },
     "quality-gate-audit": {
-      "source": "./skills",
+      "source": "./skills/quality-gate-audit",
       "sourceType": "local",
       "computedHash": "6c124c73e2c641154f4ee693dc87c592b59d1f0672650a1ea8fddcf4633c216c"
     },

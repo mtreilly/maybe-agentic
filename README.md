@@ -29,7 +29,7 @@ Our own skills:
 
 `handoff`, `teach`, and `wait-what` preserve upstream's explicit invocation settings for Codex and Claude Code. Invoke them by name, such as `$teach` in Codex or `/teach` in Claude Code. Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
 
-The CLI keeps a canonical copy under `.agents/skills/`, with project-local links for clients that use another directory. This installation targets Codex, Claude Code, OpenCode, and Pi. It is local to this directory; global agent configuration has not been changed.
+Setup installs globally for the current user by default, with a canonical copy under `~/.agents/skills/` and client links in their user-level skill directories. This targets Codex, Claude Code, OpenCode, and Pi across projects. Use `--local` to install under this repository’s `.agents/skills/` instead. The skill links above refer to the existing repository-local copies.
 
 ## Portable pstack and cleanup skills
 
@@ -67,31 +67,72 @@ Locally maintained skills inspired by the executable checks in `withcontext`:
 Run the setup script from this directory (or invoke it by absolute path from anywhere):
 
 ```sh
-./setup.sh
+./setup.sh                         # core profile
+./setup.sh --profile frontend
+./setup.sh --profile backend --profile research
+./setup.sh --profile all             # complete manifest
 ./setup.sh --dry-run
+./setup.sh --local
 ./setup.sh --agent codex --agent claude-code
 ```
 
-The default targets are Codex, Claude Code, OpenCode, and Pi. Installation requires Node.js, npm/npx, Git, and network access. Add repository/skill pairs to `skills.txt` to expand the selection. Setup installs the latest upstream content and refreshes client links; it does not restore a historical snapshot from the lockfile. Repeated runs may replace upstream-managed files.
+The default profile is `core` (eight skills); the default clients are Codex, Claude Code, OpenCode, and Pi. Profiles select what is installed or updated. Existing extra skills remain discoverable until explicitly removed; profile selection does not uninstall skills. Installation requires Python 3, Node.js, npm/npx, Git, and network access. Use `--profile frontend`, `--profile backend`, or `--profile research` to extend the default core selection; repeat `--profile` to combine profiles, or use `--profile all` for the full catalog. Add repository/skill pairs to `skills.txt` to expand the selection. Setup installs the latest upstream content and refreshes client links; it does not restore a historical snapshot from the lockfile. Repeated runs may replace upstream-managed files.
 
 Maintain our own skills in `skills/<name>/` and add `./skills/<name> <name>` to `skills.txt`. Setup installs a discoverable copy and client links through the CLI. Edit the source under `skills/`, then rerun setup to refresh the installed copy.
 
 ## Updates
 
 ```sh
-./setup.sh --update
+./setup.sh --update --profile all
+./setup.sh --local --update
 ```
 
-Updates are on demand; no automatic schedule is configured. The CLI records upstream provenance and content hashes in `skills-lock.json`. Review changes to the installed files and lockfile before committing an update. Keep personal customizations separate from upstream-managed files, which can be replaced during updates.
+Updates are on demand; no automatic schedule is configured. Global installs track upstream provenance and content hashes in `~/.agents/.skill-lock.json`; local installs use `skills-lock.json` in this repository. Review changes to locally installed files and the project lockfile before committing an update. Updates and the final listing use the selected scope. Keep personal customizations separate from upstream-managed files, which can be replaced during updates.
 
 During updates, local skills are reinstalled from our maintained `skills/` directories, preserving the source files rather than replacing them with upstream content.
 
 `--agent` selects client links during installation and filters the final listing. Updates change the shared skill content for every linked client; newly selected clients need a normal setup run to create their links.
 
+## Profiles and doctor
+
+Profiles live in `profiles/*.json` and select names from `skills.txt`. `frontend`,
+`backend`, and `research` inherit `core`; repeat `--profile` to combine them.
+`all` selects the complete manifest. Selection is validated before installation.
+Update runs respect the selected profile too.
+
+```sh
+./doctor.sh
+./doctor.sh --profile all
+./doctor.sh --profile frontend --agent codex --agent claude-code --json
+```
+
+Doctor inspects the repository-local installation and needs only Python 3. It does not audit global client directories. Use `./setup.sh --local --profile NAME` to install the local selection it checks. Doctor is read-only. It checks profile/manifest validity,
+required frontmatter, bundled Markdown links, local source/install drift,
+selected lock entries, client links, and executable availability. Extra installed
+skills are reported and preserved. It never installs, repairs, or contacts a
+provider. Passing validates the file layout, not live client loading, full YAML
+semantics, upstream freshness, or behavioral usefulness.
+
+## Skill evaluations
+
+[The evaluation suite](evals/README.md) contains paired baseline/skill tasks for
+debugging, project quality setup, handoff, and CLI verification. It prepares
+isolated workspaces, snapshots the selected skill, captures client output and
+elapsed time, and grades concrete outputs. Human review covers judgment and
+execution evidence that the objective checks cannot establish. Routing prompts
+include requests where these skills should stay inactive.
+
+```sh
+python3 -B -m unittest discover -s tests -v
+```
+
+These regressions validate the toolkit and graders. Live model comparisons are
+separate experiments; fixture passes do not prove that a skill improves results.
+
 ## Inspect
 
 ```sh
-DO_NOT_TRACK=1 npx --yes skills@1.7.0 list --agent codex claude-code opencode pi
+DO_NOT_TRACK=1 npx --yes skills@1.7.0 list --global --agent codex claude-code opencode pi
 ```
 
-Start an agent in this directory and ask it to use `break-ui` on a specific component or screen. Existing sessions may need a new turn or restart to discover the installation.
+Start an agent in any project after a global installation and ask it to use `break-ui` on a specific component or screen. Existing sessions may need a new turn or restart to discover the installation.

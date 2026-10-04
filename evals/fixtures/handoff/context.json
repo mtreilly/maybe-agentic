@@ -1,0 +1,8 @@
+{
+  "objective": "Fix zero-percent coupon handling",
+  "completed": ["Reproduced the zero-percent failure", "Changed validation to accept zero"],
+  "verification": {"command": "python3 -m unittest", "result": "passed before the last rounding edit", "covers_current_state": false},
+  "pending": ["Check rounding behavior", "Rerun tests after the last edit"],
+  "authorized": "Pricing implementation and directly relevant tests only",
+  "plan": "docs/plan.md"
+}
