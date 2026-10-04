@@ -1,0 +1,14 @@
+# Upstream repository and selected skill. One pair per line.
+emilkowalski/skills animate
+emilkowalski/skills animate-expo
+emilkowalski/skills animation-vocabulary
+emilkowalski/skills break-ui
+emilkowalski/skills emil-design-eng
+emilkowalski/skills find-animation-opportunities
+emilkowalski/skills improve-animations
+emilkowalski/skills mobile-native
+emilkowalski/skills prototype
+emilkowalski/skills review-animations
+emilkowalski/skills write-swift
+./skills/ui-performance ui-performance
+./skills/systematic-debugging systematic-debugging
