@@ -18,6 +18,10 @@ Follow the requested scope. A diagnosis produces findings and proposed fixes; a 
 
 If reproduction is unavailable, state that limit and use code, logs, or configuration to narrow hypotheses. Do not report a suspected cause as established.
 
+For difficult or recurring failures, build a repeatable check that detects the exact reported symptom, not merely successful process exit or the absence of a crash. Name its command or interaction and expected failure. Choose an existing test, HTTP or CLI fixture, browser interaction, captured event replay, differential comparison, or bisection as appropriate. Keep inputs and resources isolated; control time, randomness, and network dependencies where they affect the signal.
+
+Make the check cheap enough to repeat. Minimize inputs, configuration, and steps one at a time, rerunning after each reduction to ensure it still catches the same bug. Preserve the original scenario for final verification. For intermittent failures, record the observed reproduction rate and use a comparable workload before and after; one passing run does not establish a repair.
+
 ## Trace and compare
 
 Trace an invalid value or operation backward through its callers until you identify where it originated. Check initialization, lifecycle, ownership, and environment assumptions rather than patching only the final error site.
@@ -27,6 +31,8 @@ Find a working example in the same codebase where possible. Compare inputs, inte
 ## Test one hypothesis
 
 State the explanation and its evidence: “X fails because Y; observing Z would confirm or contradict that.” Choose a small diagnostic or reversible change that distinguishes it from alternatives. Change one relevant variable at a time and inspect the actual result.
+
+When the cause remains unclear, consider plausible alternative explanations and rank them by evidence before choosing the next probe. This reduces attachment to the first plausible theory. An already-established cause does not need an invented list of alternatives.
 
 When contradicted, record what the attempt ruled out and update the hypothesis. Remove your unsuccessful experimental changes without discarding the user's work. Avoid stacking speculative fixes or repeatedly trying the same change with different wording.
 
@@ -42,6 +48,8 @@ For asynchronous failures, wait for the actual event or state with a bounded tim
 
 Repeat the original failing interaction or command, then run checks covering affected behavior and interfaces. Run required project gates. Evidence must apply to the final relevant code state; rerun checks when subsequent changes invalidate it. Passing lint alone does not prove a build, and a code edit alone does not prove a performance improvement.
 
+If you minimized the reproduction, verify both that case and the original scenario. Give temporary diagnostic logs a distinctive marker so they can be found reliably; remove your experimental instrumentation before delivery, preserving existing diagnostics and any intentionally retained evidence. Explain retained diagnostic changes.
+
 If the cause is external or still uncertain, explain what was ruled out and distinguish mitigation from repair. Retries, timeouts, or monitoring should address an observed failure mode, not replace investigation.
 
 ## Report
@@ -51,3 +59,5 @@ State the failure, established cause or remaining hypothesis, proposed or applie
 ## Attribution
 
 Adapted from obra/superpowers' `systematic-debugging` skill and its root-cause tracing, condition-based waiting, and defense-in-depth references at commit `8ca22dba9a94f28898bbce59f2537ff4d87c747d` (v6.4.2). Scope, proportional verification, redacted diagnostics, and escalation guidance are maintained locally. The upstream MIT license is included in [LICENSE.txt](LICENSE.txt).
+
+Feedback-loop construction, reproduction minimization, alternative hypotheses, and instrumentation cleanup draw on Matt Pocock's `diagnosing-bugs` at commit `24fe0ef7737efae15c87225755e9f6f5965e4888` (1.3.1). His MIT license is included in [LICENSE.mattpocock.txt](LICENSE.mattpocock.txt).

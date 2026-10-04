@@ -19,11 +19,66 @@
       "skillPath": "skills/animation-vocabulary/SKILL.md",
       "computedHash": "0058036865ecbb864fd0c4132efcc62425355d6e99c7e6ef6a936742d62a5dea"
     },
+    "architect": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "940bb5c648b79ce7531f76f0523d9bd06e9b0d55cfbf6e90938c516f8058572a"
+    },
+    "architecture-guardrails": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "5736091252ef2ed7fa4a70d446df40797d5c2f8dc813cc15670570e97bf20036"
+    },
+    "artifact-integrity": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "39369592a95e9b7efad2bfe65a81ae063e2a2f9c87f58f1674974d68efc1afee"
+    },
+    "automate-me": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "63a66db50de22afed9e2fc088ce548c8bd82f5324c68596387527f7fca3ed13e"
+    },
+    "benchmark-checklist": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "52cc1a7037d574899561f9e94f5ef158d6d19e8b43fda818e15968a6d4fab84a"
+    },
+    "blast-radius": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "160fac0fdb4c0029c55601d0ea14ae6a50cd8230a22a1c8a4f72dc72af54585b"
+    },
     "break-ui": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
       "skillPath": "skills/break-ui/SKILL.md",
       "computedHash": "60ada67662925f4df5e3c6ff41cac3ab241b66f8898100a5ffcd7ba7196cb868"
+    },
+    "codebase-design": {
+      "source": "./skills/codebase-design",
+      "sourceType": "local",
+      "computedHash": "35e5ff792ab05d6756669fb259e046cef5e96af13a3ed1fa22086cdad4b6e2e2"
+    },
+    "correct": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "3c38e15c684cfdb3a03be5e4b43489cd0054ba711bfa847b5d4bdbb56b469cb9"
+    },
+    "create-verification-skill": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "9032c3e6bdd8cb6f4e6bc0217b1f0ffb2318f760e175a694bbd7d6ade833d24c"
+    },
+    "deslop-code": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "c08f504eb454ed6d7794efe99616a4b182f1cd6e9be14aedfab9d72fec508136"
+    },
+    "deslop-writing": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "8a0a8662ae0ae6f7328ecb71f282a0e49b85b55777c1b3e43a3d6ef5d7b493e2"
     },
     "emil-design-eng": {
       "source": "emilkowalski/skills",
@@ -37,11 +92,31 @@
       "skillPath": "skills/find-animation-opportunities/SKILL.md",
       "computedHash": "465d087c41768e4f14ed640dd049036009f613feb55baaa5831b68b33178f9d2"
     },
+    "handoff": {
+      "source": "./skills/handoff",
+      "sourceType": "local",
+      "computedHash": "41c0e56e60df759b4312ef1dca32f874a1a9d5540447f4264a31c78689a4ed7b"
+    },
+    "how": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "062bfc2d8317bee17c1470bfed7e064f9b6d8e8cbf6ee554c141f7eacd2b481d"
+    },
     "improve-animations": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
       "skillPath": "skills/improve-animations/SKILL.md",
       "computedHash": "524ea241e41d58bbdd8e288700fe24f5725e2a2f3ae7186ad7cebf9055058356"
+    },
+    "interrogate": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "b506508fe3c2a655394fffdca078d27597cad169b284512c4e918c6f60f5a4cd"
+    },
+    "maintain-verification-skill": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "97283a825eda784f8632e76f4920a33065b3ea17bafd37b7f1d9d69fa77b3324"
     },
     "mobile-native": {
       "source": "emilkowalski/skills",
@@ -49,11 +124,31 @@
       "skillPath": "skills/mobile-native/SKILL.md",
       "computedHash": "f221cea36642168df6d3d6d7f236237cbf1ae669138ff7df07775674223d49ad"
     },
+    "poteto-mode": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "cf811ac862826e9ea44be26a98d60a91d67676c2e867f29ed25de1b2317a9c27"
+    },
+    "project-quality-setup": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "9d4faf9f4c75f348dadc6c5556d17cc327f54a8ff5fdcfa72f74b883a90fac2e"
+    },
     "prototype": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
       "skillPath": "skills/prototype/SKILL.md",
       "computedHash": "77be567d8c946608fdd15e61b62ab383cdf289a194dce2479828b7eda860d3ba"
+    },
+    "quality-gate-audit": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "6c124c73e2c641154f4ee693dc87c592b59d1f0672650a1ea8fddcf4633c216c"
+    },
+    "reflect": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "3c48621bf3a9e268a55786871e8312e678e6ac9a3d350cbe09bf467081847ac3"
     },
     "review-animations": {
       "source": "emilkowalski/skills",
@@ -61,15 +156,35 @@
       "skillPath": "skills/review-animations/SKILL.md",
       "computedHash": "b4e5f0f4fe3e2743c85bf7354108f48a0b9d502cb20ef5c4a9c195da91f93736"
     },
+    "show-me-your-work": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "f6e1bf518670ec005a8f9c0db3065325daaba3d9edf28c7e46140c78c9022931"
+    },
     "systematic-debugging": {
       "source": "./skills/systematic-debugging",
       "sourceType": "local",
-      "computedHash": "f1b3d9e6e358b251a114b2ecfba09a5ecc9c2338098778558c05d2d969254017"
+      "computedHash": "e644aac51375b3aa04d3d109de927bdc66a3e8856e75998208507abeb57e703b"
+    },
+    "teach": {
+      "source": "./skills/teach",
+      "sourceType": "local",
+      "computedHash": "163d6ffde14d6016f51ba4f70e335c43a0b639771411c38fc127f6bb43948d98"
     },
     "ui-performance": {
       "source": "./skills/ui-performance",
       "sourceType": "local",
       "computedHash": "d25818ededd1f2ee5fd51cc24d15b935d563857bbb9805dddc207a6d9cd11b0c"
+    },
+    "wait-what": {
+      "source": "./skills/wait-what",
+      "sourceType": "local",
+      "computedHash": "b3e34688004e12336504b210fc35e288fde4451d2596fbae9d68c37b314f2f8b"
+    },
+    "why": {
+      "source": "./skills",
+      "sourceType": "local",
+      "computedHash": "822e57855cf08308ba70fee17cb9cfc340c3f17fadcdb3426fbd7801ee7b7588"
     },
     "write-swift": {
       "source": "emilkowalski/skills",

@@ -21,9 +21,46 @@ Selected skills from [emilkowalski/skills](https://github.com/emilkowalski/skill
 Our own skills:
 
 - [ui-performance](skills/ui-performance/SKILL.md): diagnose rendering, animation, and scrolling bottlenecks using guidance adapted from Emil's performance cheatsheet.
-- [systematic-debugging](skills/systematic-debugging/SKILL.md): investigate bugs, test and build failures, flaky behavior, and integrations using a root-cause workflow adapted from Superpowers.
+- [systematic-debugging](skills/systematic-debugging/SKILL.md): investigate bugs, test and build failures, flaky behavior, and integrations using guidance adapted from Superpowers and Matt Pocock.
+- [codebase-design](skills/codebase-design/SKILL.md): improve interfaces and concentrate complexity, changes, and verification using guidance adapted from Matt Pocock.
+- [handoff](skills/handoff/SKILL.md): save scope, authorization, verified state, artifact pointers, and next actions for another session.
+- [teach](skills/teach/SKILL.md): teach through focused lessons, practice, feedback, and optional persistent learning records.
+- [wait-what](skills/wait-what/SKILL.md): re-explain a confusing message in plain language with the missing context.
+
+`handoff`, `teach`, and `wait-what` preserve upstream's explicit invocation settings for Codex and Claude Code. Invoke them by name, such as `$teach` in Codex or `/teach` in Claude Code. Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
 
 The CLI keeps a canonical copy under `.agents/skills/`, with project-local links for clients that use another directory. This installation targets Codex, Claude Code, OpenCode, and Pi. It is local to this directory; global agent configuration has not been changed.
+
+## Portable pstack and cleanup skills
+
+These locally maintained adaptations are self-contained. Supporting references and scripts are bundled; they do not require sibling skills, Cursor plugins, named models, or Cursor transcript paths. Delegation is optional and follows the active session authorization.
+
+- [create-verification-skill](skills/create-verification-skill/SKILL.md)
+- [maintain-verification-skill](skills/maintain-verification-skill/SKILL.md)
+- [benchmark-checklist](skills/benchmark-checklist/SKILL.md)
+- [correct](skills/correct/SKILL.md)
+- [blast-radius](skills/blast-radius/SKILL.md)
+- [show-me-your-work](skills/show-me-your-work/SKILL.md)
+- [how](skills/how/SKILL.md)
+- [why](skills/why/SKILL.md)
+- [architect](skills/architect/SKILL.md)
+- [interrogate](skills/interrogate/SKILL.md)
+- [reflect](skills/reflect/SKILL.md)
+- [automate-me](skills/automate-me/SKILL.md)
+- [poteto-mode](skills/poteto-mode/SKILL.md)
+- [deslop-code](skills/deslop-code/SKILL.md)
+- [deslop-writing](skills/deslop-writing/SKILL.md)
+
+`deslop-code` adapts Cursor Team Kit’s `deslop`; `deslop-writing` adapts pstack’s `unslop`. `poteto-mode` is a smaller portable edition, activated by a request to use that mode. Provenance and upstream licenses are included in each skill folder. Upstream refreshes do not automatically replace these adaptations.
+
+## Project quality skills
+
+Locally maintained skills inspired by the executable checks in `withcontext`:
+
+- [project-quality-setup](skills/project-quality-setup/SKILL.md): Recommend or implement a proportionate code-quality setup after inspecting a project’s stack, existing checks, and failure risks.
+- [architecture-guardrails](skills/architecture-guardrails/SKILL.md): Make established project architecture rules enforceable through types, import boundaries, contract checks, or small static checks.
+- [quality-gate-audit](skills/quality-gate-audit/SKILL.md): Audit whether a project’s lint, type, test, and validation gates check the intended inputs and report trustworthy results.
+- [artifact-integrity](skills/artifact-integrity/SKILL.md): Recommend or implement deterministic integrity checks for documentation, schemas, configuration, localization, datasets, or agent setup artifacts.
 
 ## Install or refresh client links
 
