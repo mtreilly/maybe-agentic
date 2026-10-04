@@ -102,15 +102,32 @@ Update runs respect the selected profile too.
 
 ```sh
 ./doctor.sh
-./doctor.sh --profile all
+./doctor.sh --global --profile all
+./doctor.sh --local --profile all
 ./doctor.sh --profile frontend --agent codex --agent claude-code --json
 ```
 
-Doctor inspects the repository-local installation and needs only Python 3. It does not audit global client directories. Use `./setup.sh --local --profile NAME` to install the local selection it checks. Doctor is read-only. It checks profile/manifest validity,
+Doctor defaults to the global installation, matching setup. Use `--local` to
+inspect this repository's installed copies. It needs only Python 3 and is
+read-only. It checks profile/manifest validity,
 required frontmatter, bundled Markdown links, local source/install drift,
-selected lock entries, client links, and executable availability. Extra installed
+the selected scope's lock entries, client links, and executable availability.
+Global checks use `~/.agents/skills` and `~/.agents/.skill-lock.json`
+(or `$XDG_STATE_HOME/skills/.skill-lock.json` when configured). The pinned CLI
+omits global lock records for local-source installs; doctor compares those copies
+to our source files and requires lock records for upstream selections.
+Claude's link directory honors `CLAUDE_CONFIG_DIR`; additional Codex/OpenCode
+discovery candidates honor `CODEX_HOME` and `XDG_CONFIG_HOME`. Codex/OpenCode
+use the shared canonical root under the pinned installer; Pi's installer links
+live under `~/.pi/agent/skills`.
+
+Text output names each selected skill's resolved filesystem source per client.
+JSON includes expected installation paths, present/missing/broken discovery
+candidates, and competing-source warnings. Competing copies are reported without
+inferring runtime precedence. Global checks do not model project overrides or
+custom skill paths configured inside a client. Extra installed
 skills are reported and preserved. It never installs, repairs, or contacts a
-provider. Passing validates the file layout, not live client loading, full YAML
+provider. Passing validates the selected scope and filesystem resolution, not live client loading, full YAML
 semantics, upstream freshness, or behavioral usefulness.
 
 ## Skill evaluations

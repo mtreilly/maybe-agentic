@@ -45,9 +45,9 @@
       "computedHash": "52cc1a7037d574899561f9e94f5ef158d6d19e8b43fda818e15968a6d4fab84a"
     },
     "blast-radius": {
-      "source": "./skills",
+      "source": "./skills/blast-radius",
       "sourceType": "local",
-      "computedHash": "160fac0fdb4c0029c55601d0ea14ae6a50cd8230a22a1c8a4f72dc72af54585b"
+      "computedHash": "cfd022921dee3e9578e6332efecf5682536cb23b44f84c7458c652fb6797dd0c"
     },
     "break-ui": {
       "source": "emilkowalski/skills",

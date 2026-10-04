@@ -16,9 +16,9 @@ class ToolkitTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
 
-    def command(self, *args, cwd=ROOT):
+    def command(self, *args, cwd=ROOT, env=None):
         return subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=20,
-                              env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'})
+                              env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1', **(env or {})})
 
     def toolkit(self):
         root = self.root / 'toolkit'
@@ -40,19 +40,81 @@ class ToolkitTests(unittest.TestCase):
     def test_doctor_read_only_and_detects_drift_links_and_resources(self):
         root = self.toolkit()
         before = self.snapshot(root)
-        clean = self.command('bash', str(root / 'doctor.sh'), '--json')
+        clean = self.command('bash', str(root / 'doctor.sh'), '--local', '--json')
         self.assertEqual(clean.returncode, 0, clean.stdout + clean.stderr)
         self.assertEqual(self.snapshot(root), before)
         source = root / 'skills/systematic-debugging/SKILL.md'
         source.write_text(source.read_text() + '\n[Missing](references/missing.md)\n')
         (root / '.pi/skills/handoff').unlink()
         (root / '.pi/skills/handoff').symlink_to('missing')
-        broken = self.command('bash', str(root / 'doctor.sh'), '--json')
+        broken = self.command('bash', str(root / 'doctor.sh'), '--local', '--json')
         self.assertEqual(broken.returncode, 1)
         errors = json.loads(broken.stdout)['errors']
         self.assertTrue(any('missing linked resource' in error for error in errors))
         self.assertTrue(any('differs' in error for error in errors))
         self.assertTrue(any('pi link' in error for error in errors))
+
+    def test_global_doctor_resolves_overrides_and_reports_competing_sources_without_writes(self):
+        root = self.toolkit()
+        global_home = self.root / 'user'
+        canonical = global_home / '.agents/skills'
+        canonical.parent.mkdir(parents=True)
+        shutil.copytree(root / '.agents/skills', canonical)
+        lock = global_home / 'custom-state/skills/.skill-lock.json'
+        lock.parent.mkdir(parents=True)
+        shutil.copy2(root / 'skills-lock.json', lock)
+        overrides = {'CODEX_HOME': str(global_home / 'custom-codex'),
+                     'CLAUDE_CONFIG_DIR': str(global_home / 'custom-claude'),
+                     'XDG_CONFIG_HOME': str(global_home / 'custom-config'),
+                     'XDG_STATE_HOME': str(global_home / 'custom-state')}
+        for directory in [global_home / 'custom-claude/skills', global_home / '.pi/agent/skills']:
+            directory.mkdir(parents=True)
+            for skill in canonical.iterdir():
+                (directory / skill.name).symlink_to(skill)
+        # Simulate the OS home lookup without changing the user's HOME environment.
+        # The real CLI entrypoint, lock parsing, filesystem checks and reporting run.
+        launcher = f"""import runpy, sys
+from pathlib import Path
+from unittest.mock import patch
+sys.path.insert(0, {str(root / 'scripts')!r})
+sys.argv = [{str(root / 'scripts/doctor.py')!r}, *sys.argv[1:]]
+with patch('pathlib.Path.home', return_value=Path({str(global_home)!r})):
+    runpy.run_path({str(root / 'scripts/doctor.py')!r}, run_name='__main__')
+"""
+        before = self.snapshot(global_home)
+        result = self.command(sys.executable, '-B', '-c', launcher, '--json', env=overrides)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        data = json.loads(result.stdout)
+        self.assertEqual(data['scope'], 'global')  # Matches setup's default.
+        self.assertEqual(data['lockfile'], str(lock))
+        for agent in ['codex', 'opencode', 'claude-code', 'pi']:
+            self.assertEqual(data['resolutions'][agent]['handoff']['resolved_source'], str(canonical / 'handoff'))
+        self.assertEqual(self.snapshot(global_home), before)
+        shadow = global_home / 'custom-codex/skills/handoff'
+        shutil.copytree(canonical / 'handoff', shadow)
+        result = self.command(sys.executable, '-B', '-c', launcher, '--global', '--json', env=overrides)
+        data = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertTrue(data['resolutions']['codex']['handoff']['ambiguous'])
+        self.assertEqual(len(data['resolutions']['codex']['handoff']['candidates']), 2)
+        self.assertTrue(any('competing' in warning for warning in data['warnings']))
+        # A client link to a different owner must fail even with a healthy canonical copy.
+        link = global_home / 'custom-claude/skills/handoff'
+        link.unlink()
+        link.symlink_to(shadow)
+        failed = self.command(sys.executable, '-B', '-c', launcher, '--json', env=overrides)
+        self.assertEqual(failed.returncode, 1)
+        self.assertTrue(any('claude-code link' in error for error in json.loads(failed.stdout)['errors']))
+        link.unlink()
+        link.symlink_to(canonical / 'handoff')
+        lock.unlink()
+        # A local-only global selection has no lock record by installer design.
+        local_only = self.command(sys.executable, '-B', '-c', launcher, '--json', env=overrides)
+        self.assertEqual(local_only.returncode, 0, local_only.stdout)
+        self.assertIn('handoff', json.loads(local_only.stdout)['unlocked_local'])
+        failed = self.command(sys.executable, '-B', '-c', launcher, '--profile', 'all', '--json', env=overrides)
+        self.assertEqual(failed.returncode, 1)
+        self.assertTrue(any('missing global lockfile' in error for error in json.loads(failed.stdout)['errors']))
 
     def test_setup_profiles_combine_and_invalid_profiles_do_not_invoke_cli(self):
         root = self.toolkit()

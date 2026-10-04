@@ -17,6 +17,12 @@ Check pinned dependency behavior and local patches, wire formats, serialized dat
 
 Identify the small set of invariants or assumptions on which safety depends. A change can have several independent risks; one proven invariant does not automatically clear all of them.
 
+## Review behavior across time and recovery
+
+For changes involving authorization, dated state, events, projections, external reads, or resource lifecycles, read [references/lifecycle-scenarios.md](references/lifecycle-scenarios.md). Select scenarios justified by the changed contract; do not impose the entire catalogue on every diff.
+
+Trace the invariant through every reachable entry point, including alternate callers and later events. Check the original action, subsequent state changes, and recovery from interruption. An initial successful request does not prove that a revoked caller, delayed timer, retry, or rebuild still respects the contract.
+
 ## Seek evidence for each important assumption
 
 Distinguish:
@@ -35,10 +41,10 @@ Choose the cheapest meaningful proof. Run focused checks when possible within th
 - State each safety assumption and its evidence level. Mark unproved assumptions explicitly.
 - Give confirmed risks with reachable mechanism, source location, likely impact, and a check or mitigation. Do not invent numerical probabilities.
 - List checked-and-cleared concerns separately.
-- Identify the cheapest remaining verification before shipping.
+- Identify the cheapest remaining verification before shipping, including relevant later-event, alternate-caller, and recovery scenarios left unproved.
 
 A review request produces findings. Apply fixes only when requested. Keep the report direct, distinguish observation from inference, and do not expose private evidence publicly.
 
 ## Attribution
 
-Adapted from Lauren Tan's pstack `blast-radius`, cursor/plugins commit `e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a`. History lookup, evidence calibration, and reporting are included locally. See [LICENSE.txt](LICENSE.txt).
+Adapted from Lauren Tan's pstack `blast-radius`, cursor/plugins commit `e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a`. History lookup, evidence calibration, and reporting are included locally. The lifecycle reference is locally authored from observed SchoolMIS review patterns; its examples do not impose SchoolMIS-specific architecture on other projects. See [LICENSE.txt](LICENSE.txt).
