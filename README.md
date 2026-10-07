@@ -18,6 +18,10 @@ Selected skills from [emilkowalski/skills](https://github.com/emilkowalski/skill
 - [review-animations](.agents/skills/review-animations/SKILL.md)
 - [write-swift](.agents/skills/write-swift/SKILL.md)
 
+From [warpdotdev/common-skills](https://github.com/warpdotdev/common-skills):
+
+- [skill-doctor](.agents/skills/skill-doctor/SKILL.md): grade skills by scoring recent local agent conversations, then draft skill edits and a local HTML report. Invoke with `/skill-doctor`. Included in the `research` profile (`./setup.sh --profile research`).
+
 Our own skills:
 
 - [ui-performance](skills/ui-performance/SKILL.md): diagnose rendering, animation, and scrolling bottlenecks using guidance adapted from Emil's performance cheatsheet.

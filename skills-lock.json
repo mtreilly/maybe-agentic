@@ -161,6 +161,12 @@
       "sourceType": "local",
       "computedHash": "f6e1bf518670ec005a8f9c0db3065325daaba3d9edf28c7e46140c78c9022931"
     },
+    "skill-doctor": {
+      "source": "warpdotdev/common-skills",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/skill-doctor/SKILL.md",
+      "computedHash": "30931b68b6fe24705073e0f2a720df286974e9dd097e837e099372e85764a878"
+    },
     "systematic-debugging": {
       "source": "./skills/systematic-debugging",
       "sourceType": "local",

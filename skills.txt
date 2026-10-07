@@ -10,6 +10,7 @@ emilkowalski/skills mobile-native
 emilkowalski/skills prototype
 emilkowalski/skills review-animations
 emilkowalski/skills write-swift
+warpdotdev/common-skills skill-doctor
 ./skills/ui-performance ui-performance
 ./skills/systematic-debugging systematic-debugging
 ./skills/codebase-design codebase-design
