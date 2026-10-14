@@ -36,3 +36,4 @@ warpdotdev/common-skills skill-doctor
 ./skills/architecture-guardrails architecture-guardrails
 ./skills/quality-gate-audit quality-gate-audit
 ./skills/artifact-integrity artifact-integrity
+./skills/plain-voice plain-voice

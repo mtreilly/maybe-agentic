@@ -10,6 +10,7 @@ file; this document covers material that arrived without one.
 | --- | --- | --- |
 | [emilkowalski/skills](https://github.com/emilkowalski/skills) | `.agents/skills/{animate, animate-expo, animation-vocabulary, break-ui, emil-design-eng, find-animation-opportunities, improve-animations, mobile-native, prototype, review-animations, write-swift}` | MIT |
 | [warpdotdev/common-skills](https://github.com/warpdotdev/common-skills) `skill-doctor` | `.agents/skills/skill-doctor/` | MIT |
+| [danyuchn/asd-ste100-skill](https://github.com/danyuchn/asd-ste100-skill) (rules summary and linter, adapted) | `skills/plain-voice/{references/clarity-rules.md, scripts/clarity-lint.py}` | MIT |
 | [@pierre/diffs](https://www.npmjs.com/package/@pierre/diffs) 1.5.2 (bundled build) | `.agents/skills/skill-doctor/assets/pierre-diffs.js` | Apache-2.0 |
 | Dependencies declared by `@pierre/diffs`: Shiki, vscode-oniguruma, lru_map, hast-util-to-html, diff, @pierre/theme | same bundle | MIT / BSD-3-Clause / Apache-2.0 |
 
