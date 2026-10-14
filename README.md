@@ -160,3 +160,7 @@ DO_NOT_TRACK=1 npx --yes skills@1.7.0 list --global --agent codex claude-code op
 ```
 
 Start an agent in any project after a global installation and ask it to use `break-ui` on a specific component or screen. Existing sessions may need a new turn or restart to discover the installation.
+
+## License
+
+MIT, see `LICENSE`. Vendored third-party material keeps its original license; see `THIRD_PARTY_NOTICES.md`.
