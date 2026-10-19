@@ -137,6 +137,43 @@ skills are reported and preserved. It never installs, repairs, or contacts a
 provider. Passing validates the selected scope and filesystem resolution, not live client loading, full YAML
 semantics, upstream freshness, or behavioral usefulness.
 
+## MCP servers
+
+Default MCP servers live in [`mcp/servers.json`](mcp/servers.json). Setup
+registers them at user level for Codex, Claude Code, OpenCode, and Pi:
+
+```sh
+./setup-mcp.sh                          # build sources, register every server
+./setup-mcp.sh --dry-run                # show what would change
+./setup-mcp.sh --check                  # exit 1 when a client has drifted
+./setup-mcp.sh --server chrome-devtools --agent codex
+```
+
+| Server | Source | Notes |
+|--------|--------|-------|
+| `chrome-devtools` | [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp), pinned tag | Built from source into `~/.agents/mcp/chrome-devtools/<tag>/`. `--auto-connect` attaches to your running Chrome; enable remote debugging at `chrome://inspect/#remote-debugging` first. |
+| `kimi-cu` | KimiCU macOS app | Optional; skipped when the app is not installed. |
+
+Where each client keeps its entry:
+
+| Client | File | Written by |
+|--------|------|------------|
+| Codex | `$CODEX_HOME/config.toml` | Setup replaces `[mcp_servers.NAME]` and its `env` table; tool approval tables are kept |
+| Claude Code | `~/.claude.json` (user scope) | `claude mcp add-json --scope user` |
+| OpenCode | `$XDG_CONFIG_HOME/opencode/opencode.json` | Setup, `mcp.NAME` |
+| Pi | `$PI_CODING_AGENT_DIR/mcp.json` | Setup, `mcpServers.NAME` |
+
+Setup only touches servers named in the manifest. Before the first change in a
+run it copies each file to `<file>.maybe-agentic.bak`. Source servers launch
+with the `node` on `PATH` when setup ran (pass `--node` to choose another);
+prefer a stable path such as `/opt/homebrew/bin/node` over a versioned nvm path.
+
+To upgrade a source server, change its `ref` and rerun setup. Old builds stay
+under `~/.agents/mcp/NAME/` until you delete them. To add a server, add an
+entry with either `command` or `source`, plus `args`, `env`, `optional`,
+`startup_timeout_sec`, or `tool_timeout_sec`. Codex uses both timeouts,
+OpenCode only the startup timeout, and Claude Code and Pi neither.
+
 ## Skill evaluations
 
 [The evaluation suite](evals/README.md) contains paired baseline/skill tasks for
