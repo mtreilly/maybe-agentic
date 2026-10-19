@@ -1,0 +1,31 @@
+{
+  "servers": {
+    "chrome-devtools": {
+      "description": "Chrome DevTools for agents: performance traces, network, console, screenshots and Lighthouse audits.",
+      "source": {
+        "git": "https://github.com/ChromeDevTools/chrome-devtools-mcp.git",
+        "ref": "chrome-devtools-mcp-v1.11.0",
+        "build": [
+          ["npm", "ci", "--no-audit", "--no-fund"],
+          ["npm", "run", "bundle"]
+        ],
+        "env": {
+          "PUPPETEER_SKIP_DOWNLOAD": "1"
+        },
+        "entry": "build/src/bin/chrome-devtools-mcp.js"
+      },
+      "args": ["--auto-connect", "--no-usage-statistics", "--no-performance-crux"],
+      "env": {
+        "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": "1"
+      },
+      "startup_timeout_sec": 30,
+      "tool_timeout_sec": 180
+    },
+    "kimi-cu": {
+      "description": "Kimi computer use for desktop applications (macOS app).",
+      "command": "/Applications/KimiCU.app/Contents/MacOS/kimi-cu",
+      "args": ["mcp", "-s", "user"],
+      "optional": true
+    }
+  }
+}
