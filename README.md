@@ -160,6 +160,8 @@ registers them at user level for Codex, Claude Code, OpenCode, and Pi:
 | `sentry` | Remote, OAuth | Sign in on first use. |
 | `cloudflare-docs` | Remote, no auth | Cloudflare developer docs. |
 | `cloudflare-bindings`, `cloudflare-observability` | Remote, OAuth | Workers resources, logs and analytics. Sign in on first use. |
+| `planetscale` | Remote, OAuth | Databases, branches, deploy requests and query insights. |
+| `workos` | Remote, OAuth | AuthKit, SSO and directory sync. |
 
 Remote servers sign in from the client: Claude Code and OpenCode prompt on
 first use, Codex needs `codex mcp login NAME`, and Pi uses `/mcp`.

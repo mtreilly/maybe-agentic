@@ -83,6 +83,16 @@
       "description": "Cloudflare Workers logs and analytics.",
       "url": "https://observability.mcp.cloudflare.com/mcp",
       "note": "Sign in on first use (Codex: codex mcp login cloudflare-observability; Pi: /mcp)."
+    },
+    "planetscale": {
+      "description": "PlanetScale databases, branches, deploy requests and query insights.",
+      "url": "https://mcp.pscale.dev/mcp/planetscale",
+      "note": "Sign in on first use (Codex: codex mcp login planetscale; Pi: /mcp)."
+    },
+    "workos": {
+      "description": "WorkOS AuthKit, SSO, directory sync and docs.",
+      "url": "https://mcp.workos.com/mcp",
+      "note": "Sign in on first use (Codex: codex mcp login workos; Pi: /mcp)."
     }
   },
   "tools": {
