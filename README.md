@@ -149,10 +149,24 @@ registers them at user level for Codex, Claude Code, OpenCode, and Pi:
 ./setup-mcp.sh --server chrome-devtools --agent codex
 ```
 
-| Server | Source | Notes |
-|--------|--------|-------|
-| `chrome-devtools` | [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp), pinned tag | Built from source into `~/.agents/mcp/chrome-devtools/<tag>/`. `--auto-connect` attaches to your running Chrome; enable remote debugging at `chrome://inspect/#remote-debugging` first. |
+| Server | Kind | Notes |
+|--------|------|-------|
+| `chrome-devtools` | Built from [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp), pinned tag | Into `~/.agents/mcp/chrome-devtools/<tag>/`. `--auto-connect` attaches to your running Chrome; enable remote debugging at `chrome://inspect/#remote-debugging` first. Extension tools and service-worker pages are on for extension work. |
+| `context7` | `npx`, pinned | Current library docs (TanStack, React, Tailwind, Effect, Hono, Drizzle). |
+| `shadcn` | `npx`, pinned | Registry components; reads `components.json` in the session's project. |
+| `gopls` | `gopls mcp` | Optional; skipped without gopls v0.20+. |
+| `vsware` | VSware Support Plugin companion | Optional; skipped when the checkout is absent. Each client uses its own identity (`--identity codex`, ...); pair each once with `support-plugin pair --identity <agent>`. |
 | `kimi-cu` | KimiCU macOS app | Optional; skipped when the app is not installed. |
+| `sentry` | Remote, OAuth | Sign in on first use. |
+| `cloudflare-docs` | Remote, no auth | Cloudflare developer docs. |
+| `cloudflare-bindings`, `cloudflare-observability` | Remote, OAuth | Workers resources, logs and analytics. Sign in on first use. |
+
+Remote servers sign in from the client: Claude Code and OpenCode prompt on
+first use, Codex needs `codex mcp login NAME`, and Pi uses `/mcp`.
+
+Setup also checks the CLIs under `tools` (`glab`, `sentry-cli`) and installs a
+missing one with Homebrew, or npm when the manifest names a package. Skip that
+with `--no-tools`.
 
 Where each client keeps its entry:
 
@@ -170,8 +184,10 @@ prefer a stable path such as `/opt/homebrew/bin/node` over a versioned nvm path.
 
 To upgrade a source server, change its `ref` and rerun setup. Old builds stay
 under `~/.agents/mcp/NAME/` until you delete them. To add a server, add an
-entry with either `command` or `source`, plus `args`, `env`, `optional`,
-`startup_timeout_sec`, or `tool_timeout_sec`. Codex uses both timeouts,
+entry with one of `command`, `source` or `url`. Local servers also take `args`
+(`~/` expands; `{agent}` becomes the client name), `env` and `requires` (paths
+that must exist). Any server takes `optional`, `note`, `startup_timeout_sec`
+and `tool_timeout_sec`. Codex uses both timeouts,
 OpenCode only the startup timeout, and Claude Code and Pi neither.
 
 ## Skill evaluations
