@@ -54,7 +54,20 @@ def manifest(root=ROOT):
             raise ValueError(f'{name}: source needs git, ref and entry')
         if not all(isinstance(arg, str) for arg in spec.get('args', [])):
             raise ValueError(f'{name}: args must be strings')
-    return servers
+    skip = local(root).get('skip', [])
+    unknown = set(skip) - servers.keys()
+    if unknown:
+        raise ValueError('local.json: skip names unknown servers: ' + ', '.join(sorted(unknown)))
+    return {name: spec for name, spec in servers.items() if name not in skip}
+
+
+def local(root=ROOT):
+    """Untracked per-machine settings, e.g. {"skip": ["chrome-devtools"]} where another tool owns a server."""
+    path = root / 'mcp/local.json'
+    data = json.loads(path.read_text()) if path.exists() else {}
+    if not isinstance(data, dict) or set(data) - {'skip'} or not all(isinstance(n, str) for n in data.get('skip', [])):
+        raise ValueError('local.json: expected {"skip": [server names]}')
+    return data
 
 
 def home():

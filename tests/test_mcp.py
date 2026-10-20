@@ -145,6 +145,14 @@ json.dump(data, open(path, 'w'))
         self.assertEqual(self.run_setup('--check', '--no-tools').returncode, 0)
         self.assertEqual(self.run_setup('--check').returncode, 1)  # absent-tool is still missing
 
+    def test_local_skip_leaves_server_to_its_other_owner(self):
+        (self.root / 'mcp/local.json').write_text(json.dumps({'skip': ['binary']}))
+        result = self.run_setup('--agent', 'pi')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertNotIn('binary', json.loads((self.home / '.pi/agent/mcp.json').read_text())['mcpServers'])
+        (self.root / 'mcp/local.json').write_text(json.dumps({'skip': ['nope']}))
+        self.assertIn('skip names unknown servers', self.run_setup('--dry-run').stderr)
+
     def test_rejects_unknown_server(self):
         result = self.run_setup('--server', 'nope')
         self.assertEqual(result.returncode, 2)

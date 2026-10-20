@@ -179,6 +179,10 @@ Where each client keeps its entry:
 | OpenCode | `$XDG_CONFIG_HOME/opencode/opencode.json` | Setup, `mcp.NAME` |
 | Pi | `$PI_CODING_AGENT_DIR/mcp.json` | Setup, `mcpServers.NAME` |
 
+Per-machine exceptions go in an untracked `mcp/local.json`. Use
+`{"skip": ["chrome-devtools"]}` where another tool, such as vsware-env's
+`forge host sync-agent-tools`, already owns that server.
+
 Setup only touches servers named in the manifest. Before the first change in a
 run it copies each file to `<file>.maybe-agentic.bak`. Source servers launch
 with the `node` on `PATH` when setup ran (pass `--node` to choose another);
