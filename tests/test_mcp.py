@@ -82,9 +82,11 @@ json.dump(data, open(path, 'w'))
         (self.root / 'mcp/servers.json').write_text(json.dumps({'servers': {
             'built': {'source': {'git': 'unused', 'ref': 'v1', 'entry': 'out/server.js'},
                       'args': ['--flag'], 'env': {'A': '1'}, 'startup_timeout_sec': 30},
-            'binary': {'command': str(tool), 'args': ['mcp']},
+            'binary': {'command': 'demo-tool', 'args': ['~/x', '--identity', '{agent}']},
             'absent': {'command': str(self.base / 'missing'), 'optional': True},
-        }}))
+            'needs': {'command': str(tool), 'requires': ['~/missing.mjs'], 'optional': True},
+            'remote': {'url': 'https://mcp.example.com/mcp', 'note': 'Sign in'},
+        }, 'tools': {'demo-tool': {'brew': 'demo'}, 'absent-tool': {'url': 'https://example.com'}}}))
         opencode = self.home / '.config/opencode/opencode.json'
         opencode.parent.mkdir(parents=True)
         opencode.write_text(json.dumps({'plugin': ['keep'], 'mcp': {'mine': {'type': 'remote'}}}))
@@ -106,6 +108,10 @@ json.dump(data, open(path, 'w'))
         first = self.run_setup()
         self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
         self.assertIn('absent: skipped', first.stdout)
+        self.assertIn('needs: skipped', first.stdout)
+        self.assertIn('remote: note: Sign in', first.stdout)
+        self.assertIn('demo-tool: tool ok', first.stdout)
+        self.assertIn('absent-tool: tool missing; install it from https://example.com', first.stdout)
         launch = str(self.home / '.agents/mcp/built/v1/out/server.js')
 
         codex = tomllib.loads((self.home / '.codex/config.toml').read_text())['mcp_servers']
@@ -118,17 +124,26 @@ json.dump(data, open(path, 'w'))
         self.assertEqual(opencode['mcp']['mine'], {'type': 'remote'})
         self.assertEqual(opencode['mcp']['built'], {'type': 'local', 'command': ['/bin/node', launch, '--flag'],
                                                     'enabled': True, 'environment': {'A': '1'}, 'timeout': 30000})
+        self.assertEqual(opencode['mcp']['remote'], {'type': 'remote', 'url': 'https://mcp.example.com/mcp', 'enabled': True})
+        self.assertEqual(codex['remote'], {'url': 'https://mcp.example.com/mcp'})
         pi = json.loads((self.home / '.pi/agent/mcp.json').read_text())['mcpServers']
-        self.assertEqual(pi['binary']['args'], ['mcp'])
+        self.assertEqual(pi['binary'], {'command': str(self.base / 'bin/demo-tool'),
+                                        'args': [str(self.home / 'x'), '--identity', 'pi']})
+        self.assertEqual(pi['remote'], {'url': 'https://mcp.example.com/mcp'})
         claude = json.loads((self.home / '.claude.json').read_text())['mcpServers']
         self.assertEqual(claude['built']['type'], 'stdio')
+        self.assertEqual(claude['binary']['args'][-1], 'claude-code')
+        self.assertEqual(claude['remote'], {'type': 'http', 'url': 'https://mcp.example.com/mcp'})
         self.assertNotIn('absent', claude)
+        self.assertNotIn('needs', claude)
 
         second = self.run_setup()
         self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
         self.assertNotIn('added', second.stdout)
         self.assertNotIn('updated', second.stdout)
-        self.assertEqual(self.run_setup('--check').returncode, 0)
+        self.assertNotIn('note:', second.stdout)
+        self.assertEqual(self.run_setup('--check', '--no-tools').returncode, 0)
+        self.assertEqual(self.run_setup('--check').returncode, 1)  # absent-tool is still missing
 
     def test_rejects_unknown_server(self):
         result = self.run_setup('--server', 'nope')

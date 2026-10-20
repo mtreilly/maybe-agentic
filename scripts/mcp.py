@@ -17,19 +17,37 @@ AGENTS = ['codex', 'claude-code', 'opencode', 'pi']
 NAME = re.compile(r'^[a-z0-9][a-z0-9-]*$')
 
 
-def manifest(root=ROOT):
+def load(root):
     data = json.loads((root / 'mcp/servers.json').read_text())
-    servers = data.get('servers') if isinstance(data, dict) else None
+    if not isinstance(data, dict) or set(data) - {'servers', 'tools'}:
+        raise ValueError('servers.json: expected "servers" and optional "tools" objects')
+    return data
+
+
+def tools(root=ROOT):
+    """CLIs agents call directly, checked and installed alongside the servers."""
+    entries = load(root).get('tools', {})
+    for name, spec in entries.items():
+        if not NAME.match(name) or not isinstance(spec, dict) or set(spec) - {'description', 'brew', 'npm', 'url'}:
+            raise ValueError(f'servers.json: invalid tool {name!r}')
+    return entries
+
+
+def manifest(root=ROOT):
+    servers = load(root).get('servers')
     if not isinstance(servers, dict) or not servers:
         raise ValueError('servers.json: expected a non-empty "servers" object')
-    allowed = {'description', 'source', 'command', 'args', 'env', 'optional', 'startup_timeout_sec', 'tool_timeout_sec'}
+    allowed = {'description', 'source', 'command', 'url', 'args', 'env', 'requires', 'optional', 'note',
+               'startup_timeout_sec', 'tool_timeout_sec'}
     for name, spec in servers.items():
         if not NAME.match(name):
             raise ValueError(f'servers.json: invalid server name {name!r}')
         if not isinstance(spec, dict) or set(spec) - allowed:
             raise ValueError(f'{name}: unsupported keys {sorted(set(spec) - allowed)}')
-        if ('source' in spec) == ('command' in spec):
-            raise ValueError(f'{name}: needs exactly one of "source" or "command"')
+        if sum(key in spec for key in ['source', 'command', 'url']) != 1:
+            raise ValueError(f'{name}: needs exactly one of "source", "command" or "url"')
+        if 'url' in spec and ({'args', 'env', 'requires'} & set(spec) or not spec['url'].startswith('https://')):
+            raise ValueError(f'{name}: remote servers take an https url and no args, env or requires')
         if 'source' in spec and set(spec['source']) - {'git', 'ref', 'build', 'env', 'entry'}:
             raise ValueError(f'{name}: unsupported source keys')
         if 'source' in spec and not all(spec['source'].get(key) for key in ['git', 'ref', 'entry']):
@@ -75,23 +93,44 @@ def build(name, spec, log):
         raise RuntimeError(f'{name}: build finished without {source["entry"]}')
 
 
+def expand(value):
+    return str(home() / value[2:]) if value.startswith('~/') else value
+
+
 def resolve(name, spec, node):
     """Return the launch command, or a reason it is unavailable."""
+    if 'url' in spec:
+        return {'url': spec['url']}, None
+    for required in map(expand, spec.get('requires', [])):
+        if not Path(required).exists():
+            return None, f'{required} not found'
+    args = [expand(arg) for arg in spec.get('args', [])]
     if 'source' in spec:
         entry = install_dir(name, spec) / spec['source']['entry']
         if not entry.is_file():
             return None, f'not built at {entry.parent}'
         if not node:
             return None, 'node not found; pass --node'
-        command, args = node, [str(entry), *spec.get('args', [])]
+        command, args = node, [str(entry), *args]
     else:
-        command, args = spec['command'], list(spec.get('args', []))
-        if not (Path(command).is_file() if os.sep in command else shutil.which(command)):
-            return None, f'{command} not installed'
+        command = expand(spec['command'])
+        if os.sep not in command:
+            # Clients started from the desktop do not inherit the shell PATH.
+            command = node if command == 'node' and node else shutil.which(command) or command
+        if not Path(command).is_file():
+            return None, f'{spec["command"]} not installed'
     return {'command': command, 'args': args, 'env': dict(spec.get('env', {}))}, None
 
 
+def remote_entry(agent, url):
+    return {'claude-code': {'type': 'http', 'url': url},
+            'opencode': {'type': 'remote', 'url': url, 'enabled': True}}.get(agent, {'url': url})
+
+
 def client_entry(agent, launch, spec):
+    if 'url' in launch:
+        return remote_entry(agent, launch['url'])
+    launch = {**launch, 'args': [arg.replace('{agent}', agent) for arg in launch['args']]}
     if agent == 'claude-code':
         return {'type': 'stdio', **launch}
     if agent == 'opencode':
@@ -225,6 +264,22 @@ def register(agent, path, name, entry, claude):
         write(path, json.dumps(data, indent=2) + '\n')
 
 
+def ensure_tool(name, spec, read_only):
+    """Return True when the CLI is on PATH, installing it with brew or npm unless read-only."""
+    if shutil.which(name):
+        print(f'{name}: tool ok')
+        return True
+    installers = [(['brew', 'install', spec['brew']], 'brew') if 'brew' in spec else None,
+                  (['npm', 'install', '--global', spec['npm']], 'npm') if 'npm' in spec else None]
+    available = [step for step, tool in filter(None, installers) if shutil.which(tool)]
+    if read_only or not available:
+        print(f'{name}: tool missing' + ('' if available else f'; install it from {spec.get("url", "its docs")}'))
+        return False
+    print(f'{name}: {" ".join(available[0])}')
+    subprocess.run(available[0], check=True)
+    return True
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--agent', action='append', choices=AGENTS, default=[])
@@ -232,6 +287,7 @@ def main():
     parser.add_argument('--node', default=os.environ.get('MCP_NODE') or shutil.which('node'))
     parser.add_argument('--check', action='store_true', help='report drift without installing or writing')
     parser.add_argument('--dry-run', action='store_true', help='show changes without installing or writing')
+    parser.add_argument('--no-tools', action='store_true', help='skip the CLI tools in the manifest')
     args = parser.parse_args()
     try:
         servers = manifest()
@@ -244,7 +300,11 @@ def main():
         claude = shutil.which('claude')
         read_only = args.check or args.dry_run
         problems = 0
+        if not args.no_tools and not args.server:
+            for name, spec in tools().items():
+                problems += not ensure_tool(name, spec, read_only) and args.check
         for name, spec in selected.items():
+            changed = False
             if 'source' in spec and not read_only:
                 build(name, spec, print)
             launch, reason = resolve(name, spec, args.node)
@@ -271,7 +331,10 @@ def main():
                     problems += args.check
                     continue
                 register(agent, paths[agent], name, entry, claude)
+                changed = True
                 print(f'{name}: {agent} {"added" if state is None else "updated"} ({paths[agent]})')
+            if changed and spec.get('note'):
+                print(f'{name}: note: {spec["note"]}')
         return 1 if problems else 0
     except (ValueError, OSError, RuntimeError, subprocess.CalledProcessError, tomllib.TOMLDecodeError) as error:
         detail = getattr(error, 'stderr', None)

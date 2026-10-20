@@ -1,7 +1,7 @@
 {
   "servers": {
     "chrome-devtools": {
-      "description": "Chrome DevTools for agents: performance traces, network, console, screenshots and Lighthouse audits.",
+      "description": "Chrome DevTools for agents: performance traces, network, console, screenshots, Lighthouse and extension debugging.",
       "source": {
         "git": "https://github.com/ChromeDevTools/chrome-devtools-mcp.git",
         "ref": "chrome-devtools-mcp-v1.11.0",
@@ -14,18 +14,88 @@
         },
         "entry": "build/src/bin/chrome-devtools-mcp.js"
       },
-      "args": ["--auto-connect", "--no-usage-statistics", "--no-performance-crux"],
+      "args": [
+        "--auto-connect",
+        "--category-extensions",
+        "--experimental-include-all-pages",
+        "--no-usage-statistics",
+        "--no-performance-crux"
+      ],
       "env": {
         "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": "1"
       },
       "startup_timeout_sec": 30,
-      "tool_timeout_sec": 180
+      "tool_timeout_sec": 180,
+      "note": "Enable remote debugging at chrome://inspect/#remote-debugging so --auto-connect can attach."
+    },
+    "context7": {
+      "description": "Current library documentation (TanStack, React, Tailwind, Effect, Hono, Drizzle).",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@4.4.4"],
+      "startup_timeout_sec": 60
+    },
+    "shadcn": {
+      "description": "Browse and install shadcn registry components; reads components.json in the session's project.",
+      "command": "npx",
+      "args": ["-y", "shadcn@4.22.1", "mcp"],
+      "startup_timeout_sec": 60
+    },
+    "gopls": {
+      "description": "Go language server tools: definitions, references, diagnostics and workspace symbols.",
+      "command": "gopls",
+      "args": ["mcp"],
+      "optional": true
+    },
+    "vsware": {
+      "description": "VSware Support Plugin companion: browser capture, evidence, tickets and GitLab/Sentry cards.",
+      "command": "node",
+      "args": [
+        "~/Development/vsware/vsware-core/apps/frontends/support-plugin/tools/local-agent-companion/bin/support-plugin.mjs",
+        "mcp",
+        "--identity",
+        "{agent}"
+      ],
+      "requires": ["~/Development/vsware/vsware-core/apps/frontends/support-plugin/tools/local-agent-companion/bin/support-plugin.mjs"],
+      "optional": true,
+      "note": "Pair each new client once: support-plugin pair --identity <agent>."
     },
     "kimi-cu": {
       "description": "Kimi computer use for desktop applications (macOS app).",
       "command": "/Applications/KimiCU.app/Contents/MacOS/kimi-cu",
       "args": ["mcp", "-s", "user"],
       "optional": true
+    },
+    "sentry": {
+      "description": "Sentry issues, events, traces and releases.",
+      "url": "https://mcp.sentry.dev/mcp",
+      "note": "Sign in on first use (Codex: codex mcp login sentry; Pi: /mcp)."
+    },
+    "cloudflare-docs": {
+      "description": "Cloudflare developer documentation.",
+      "url": "https://docs.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-bindings": {
+      "description": "Cloudflare account resources: Workers, KV, R2, D1, Hyperdrive.",
+      "url": "https://bindings.mcp.cloudflare.com/mcp",
+      "note": "Sign in on first use (Codex: codex mcp login cloudflare-bindings; Pi: /mcp)."
+    },
+    "cloudflare-observability": {
+      "description": "Cloudflare Workers logs and analytics.",
+      "url": "https://observability.mcp.cloudflare.com/mcp",
+      "note": "Sign in on first use (Codex: codex mcp login cloudflare-observability; Pi: /mcp)."
+    }
+  },
+  "tools": {
+    "glab": {
+      "description": "GitLab CLI; also serves MCP with glab mcp serve.",
+      "brew": "glab",
+      "url": "https://gitlab.com/gitlab-org/cli#installation"
+    },
+    "sentry-cli": {
+      "description": "Sentry CLI for releases, source maps and issue lookups.",
+      "brew": "getsentry/tools/sentry-cli",
+      "npm": "@sentry/cli",
+      "url": "https://docs.sentry.io/cli/installation/"
     }
   }
 }
