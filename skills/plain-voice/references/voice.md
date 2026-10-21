@@ -6,7 +6,7 @@ Distilled from Micheál's own writing (the "Epistemic Engineering" essay, Octobe
 
 **Talking, not reporting.** Sentences start the way speech does. "Take the developer with a local coding agent." "So alongside the gateway we should be doing chaos engineering." "Honestly, it's just kind of crap." The reader hears a person.
 
-**Point first, then why, then what to do.** A paragraph opens with the claim. The second sentence is the reason or the example. The third is the consequence or the next step. Then it stops.
+**Point first.** Open with what the reader needs to know. Explain it where the reader needs more context. Include a next step when useful. Do not force each paragraph into the same sentence pattern.
 
 **Opinion with a reason attached.** Strong views are fine when the reason comes with them. "If you don't care about the experience, people will come to resent it and actively avoid using it." Never an adjective alone. "Bad" needs a "because".
 
@@ -37,7 +37,7 @@ Keep real technical nouns when the reader needs them: endpoint, token, migration
 ## Shape
 
 - Paragraphs of one to four sentences.
-- A list when there are three or more parallel things. Numbered when order matters.
+- Use a list when separate items are easier to scan. Number it when order matters. Let the content determine the item count.
 - Headers only in a document over about 500 words, and then sentence case.
 - Bold for the first few words of a bullet when the list is long. Never a whole sentence.
 - No em dashes. Use a full stop or a comma.
