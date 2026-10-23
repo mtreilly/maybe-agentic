@@ -40,12 +40,6 @@
       "args": ["-y", "shadcn@4.22.1", "mcp"],
       "startup_timeout_sec": 60
     },
-    "gopls": {
-      "description": "Go language server tools: definitions, references, diagnostics and workspace symbols.",
-      "command": "gopls",
-      "args": ["mcp"],
-      "optional": true
-    },
     "vsware": {
       "description": "VSware Support Plugin companion: browser capture, evidence, tickets and GitLab/Sentry cards.",
       "command": "node",

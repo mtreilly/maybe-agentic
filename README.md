@@ -155,7 +155,6 @@ registers them at user level for Codex, Claude Code, OpenCode, and Pi:
 | `chrome-devtools` | Built from [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp), pinned tag | Into `~/.agents/mcp/chrome-devtools/<tag>/`. `--auto-connect` attaches to your running Chrome; enable remote debugging at `chrome://inspect/#remote-debugging` first. Extension tools and service-worker pages are on for extension work. |
 | `context7` | `npx`, pinned | Current library docs (TanStack, React, Tailwind, Effect, Hono, Drizzle). |
 | `shadcn` | `npx`, pinned | Registry components; reads `components.json` in the session's project. |
-| `gopls` | `gopls mcp` | Optional; skipped without gopls v0.20+. |
 | `vsware` | VSware Support Plugin companion | Optional; skipped when the checkout is absent. Each client uses its own identity (`--identity codex`, ...); pair each once with `support-plugin pair --identity <agent>`. |
 | `kimi-cu` | KimiCU macOS app | Optional; skipped when the app is not installed. |
 | `sentry` | Remote, OAuth | Sign in on first use. |
