@@ -31,6 +31,7 @@ Our own skills:
 - [teach](skills/teach/SKILL.md): teach through focused lessons, practice, feedback, and optional persistent learning records.
 - [wait-what](skills/wait-what/SKILL.md): re-explain a confusing message in plain language with the missing context.
 - [plain-voice](skills/plain-voice/SKILL.md): default voice for most prose, including ordinary answers and drafts. Applies alongside task-specific skills without an explicit rewrite request. A different requested voice takes precedence.
+- [raise-the-bar](skills/raise-the-bar/SKILL.md): raise the standard of a task without expanding its scope. Invoke with `$raise-the-bar` or ask to "raise the bar" or "be ambitious".
 
 `handoff`, `teach`, and `wait-what` preserve upstream's explicit invocation settings for Codex and Claude Code. Invoke them by name, such as `$teach` in Codex or `/teach` in Claude Code. Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
 
