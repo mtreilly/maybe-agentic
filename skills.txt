@@ -26,6 +26,7 @@ warpdotdev/common-skills skill-doctor
 ./skills/how how
 ./skills/why why
 ./skills/architect architect
+./skills/statechart statechart
 ./skills/interrogate interrogate
 ./skills/reflect reflect
 ./skills/automate-me automate-me

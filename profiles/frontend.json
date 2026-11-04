@@ -12,6 +12,7 @@
     "review-animations",
     "improve-animations",
     "find-animation-opportunities",
-    "ui-performance"
+    "ui-performance",
+    "statechart"
   ]
 }

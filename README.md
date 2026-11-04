@@ -33,7 +33,7 @@ Our own skills:
 - [plain-voice](skills/plain-voice/SKILL.md): default voice for most prose, including ordinary answers and drafts. Applies alongside task-specific skills without an explicit rewrite request. A different requested voice takes precedence.
 - [raise-the-bar](skills/raise-the-bar/SKILL.md): raise the standard of a task without expanding its scope. Invoke with `$raise-the-bar` or ask to "raise the bar" or "be ambitious".
 
-`handoff`, `teach`, and `wait-what` preserve upstream's explicit invocation settings for Codex and Claude Code. Invoke them by name, such as `$teach` in Codex or `/teach` in Claude Code. Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
+`handoff`, `teach`, `wait-what`, and `statechart` preserve upstream's explicit invocation settings for Codex and Claude Code. Invoke them by name, such as `$teach` in Codex or `/teach` in Claude Code. Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
 
 Setup installs globally for the current user by default, with a canonical copy under `~/.agents/skills/` and client links in their user-level skill directories. This targets Codex, Claude Code, OpenCode, and Pi across projects. Use `--local` to install under this repository’s `.agents/skills/` instead. The skill links above refer to the existing repository-local copies.
 
@@ -50,6 +50,7 @@ These locally maintained adaptations are self-contained. Supporting references a
 - [how](skills/how/SKILL.md)
 - [why](skills/why/SKILL.md)
 - [architect](skills/architect/SKILL.md)
+- [statechart](skills/statechart/SKILL.md): check bounded TLA+ models with TLC and draw Mermaid statecharts with counterexample paths. Included in the `frontend` and `backend` profiles. Requires a supported TypeScript runtime and Java/TLC, either supplied through `TLA2TOOLS` and `JAVA` or installed by mise. Invoke with `$statechart` or `/statechart`.
 - [interrogate](skills/interrogate/SKILL.md)
 - [reflect](skills/reflect/SKILL.md)
 - [automate-me](skills/automate-me/SKILL.md)
