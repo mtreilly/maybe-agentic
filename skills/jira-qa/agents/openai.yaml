@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jira QA"
+  short_description: "Visual QA checks and clear Jira results with evidence"
+  default_prompt: "Use $jira-qa to define acceptance criteria, run visual Playwright checks, and prepare a Jira QA report with clear results and evidence."

@@ -225,3 +225,15 @@ Start an agent in any project after a global installation and ask it to use `bre
 ## License
 
 MIT, see `LICENSE`. Vendored third-party material keeps its original license; see `THIRD_PARTY_NOTICES.md`.
+
+## Jira QA
+
+[jira-qa](skills/jira-qa/SKILL.md) defines acceptance criteria, runs visual Playwright checks, and prepares formatted Jira reports. Reports include the test environment, scenario results, and clear PASS, FAIL, BLOCKED, or PENDING verdicts. Screenshot and video captions identify the observed behaviour. Failure reports include reproduction steps and expected versus actual results.
+
+The skill belongs to the `frontend` profile. Install or refresh it alone with:
+
+```sh
+./setup.sh --skill jira-qa
+```
+
+Invoke it with `$jira-qa`, for example: "Use $jira-qa to test INT-9449 on localhost:30000." Jira publication follows the user's existing authorisation.

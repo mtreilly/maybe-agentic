@@ -39,3 +39,4 @@ warpdotdev/common-skills skill-doctor
 ./skills/artifact-integrity artifact-integrity
 ./skills/plain-voice plain-voice
 ./skills/raise-the-bar raise-the-bar
+./skills/jira-qa jira-qa
