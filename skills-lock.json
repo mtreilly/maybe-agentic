@@ -92,6 +92,11 @@
       "skillPath": "skills/find-animation-opportunities/SKILL.md",
       "computedHash": "465d087c41768e4f14ed640dd049036009f613feb55baaa5831b68b33178f9d2"
     },
+    "find-state-machines": {
+      "source": "./skills/find-state-machines",
+      "sourceType": "local",
+      "computedHash": "a8cdd83da4904decdb5e62d994d6509b3c398b519bd30e6f5bc0fc4973bc82a9"
+    },
     "handoff": {
       "source": "./skills/handoff",
       "sourceType": "local",
@@ -156,6 +161,12 @@
       "skillPath": "skills/review-animations/SKILL.md",
       "computedHash": "b4e5f0f4fe3e2743c85bf7354108f48a0b9d502cb20ef5c4a9c195da91f93736"
     },
+    "security-audit": {
+      "source": "cloudflare/security-audit-skill",
+      "sourceType": "github",
+      "skillPath": "skills/security-audit/SKILL.md",
+      "computedHash": "98b97aad2873b3b9a8e064007c25e7827b493ba27fda8bfbdb41dab586767973"
+    },
     "show-me-your-work": {
       "source": "./skills",
       "sourceType": "local",
@@ -181,6 +192,11 @@
       "source": "./skills/ui-performance",
       "sourceType": "local",
       "computedHash": "d25818ededd1f2ee5fd51cc24d15b935d563857bbb9805dddc207a6d9cd11b0c"
+    },
+    "untangle-codebase": {
+      "source": "./skills/untangle-codebase",
+      "sourceType": "local",
+      "computedHash": "580c1c6c70193c648cc16a9fdea5541c3707f9be1a8b7421e46fe6fc46b39c6b"
     },
     "wait-what": {
       "source": "./skills/wait-what",

@@ -22,16 +22,34 @@ From [warpdotdev/common-skills](https://github.com/warpdotdev/common-skills):
 
 - [skill-doctor](.agents/skills/skill-doctor/SKILL.md): grade skills by scoring recent local agent conversations, then draft skill edits and a local HTML report. Invoke with `/skill-doctor`. Included in the `research` profile (`./setup.sh --profile research`).
 
+From [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill):
+
+- [security-audit](.agents/skills/security-audit/SKILL.md): review trust boundaries, hunt vulnerabilities, independently check candidates, and produce reports with structured findings and a coverage ledger. Includes domain references and validators. Included in the `backend` profile and `all`.
+
+Install or refresh this skill alone for the default clients:
+
+```sh
+./setup.sh --skill security-audit
+```
+
+Ask the agent to "use security-audit to audit this codebase" for a full audit. Security questions and focused reviews use guidance mode. Full audits use separate hunting and verification agents, with output outside the target repository by default. Running target code requires the OS sandbox controls described in the skill. Without those controls, the agent records the validation blocker.
+
+This is the single-repository starting point from Cloudflare's [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness), with six phases in the current upstream version. Installing it does not configure the article's fleet orchestration, database, production triage, or automated fixing pipeline.
+
 Our own skills:
 
 - [ui-performance](skills/ui-performance/SKILL.md): diagnose rendering, animation, and scrolling bottlenecks using guidance adapted from Emil's performance cheatsheet.
 - [systematic-debugging](skills/systematic-debugging/SKILL.md): investigate bugs, test and build failures, flaky behavior, and integrations using guidance adapted from Superpowers and Matt Pocock.
 - [codebase-design](skills/codebase-design/SKILL.md): improve interfaces and concentrate complexity, changes, and verification using guidance adapted from Matt Pocock.
+- [untangle-codebase](skills/untangle-codebase/SKILL.md): make bounded structural changes based on concrete maintenance problems, with behaviour checks and explicit equivalence limits.
+- [find-state-machines](skills/find-state-machines/SKILL.md): recover implicit machines from real code, then trace event-order risks, missing transitions, and unclear state ownership. Read-only discovery.
 - [handoff](skills/handoff/SKILL.md): save scope, authorization, verified state, artifact pointers, and next actions for another session.
 - [teach](skills/teach/SKILL.md): teach through focused lessons, practice, feedback, and optional persistent learning records.
 - [wait-what](skills/wait-what/SKILL.md): re-explain a confusing message in plain language with the missing context.
 - [plain-voice](skills/plain-voice/SKILL.md): default voice for most prose, including ordinary answers and drafts. Applies alongside task-specific skills without an explicit rewrite request. A different requested voice takes precedence.
 - [raise-the-bar](skills/raise-the-bar/SKILL.md): raise the standard of a task without expanding its scope. Invoke with `$raise-the-bar` or ask to "raise the bar" or "be ambitious".
+
+`untangle-codebase` and `find-state-machines` are included in the `frontend` and `backend` profiles. Use `$find-state-machines` to recover behaviour and risks, then `$untangle-codebase` to make structural changes when requested. Either works independently. The existing `$statechart` skill provides explicitly requested TLA+ modelling and bounded checks. These skills do not require each other. The untangle workflow was inspired by our review of [Caldo's skill](https://github.com/caldoai/skills/blob/main/skills/untangle-codebase/SKILL.md); the instructions here are locally authored.
 
 `handoff`, `teach`, `wait-what`, and `statechart` preserve upstream's explicit invocation settings for Codex and Claude Code. Invoke them by name, such as `$teach` in Codex or `/teach` in Claude Code. Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
 

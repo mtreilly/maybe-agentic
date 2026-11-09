@@ -1,5 +1,5 @@
 {
-  "description": "Core plus architecture and contract integrity.",
+  "description": "Core plus architecture, contract integrity, and security audits.",
   "extends": [
     "core"
   ],
@@ -8,6 +8,9 @@
     "artifact-integrity",
     "blast-radius",
     "benchmark-checklist",
-    "statechart"
+    "untangle-codebase",
+    "find-state-machines",
+    "statechart",
+    "security-audit"
   ]
 }

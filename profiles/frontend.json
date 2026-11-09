@@ -13,6 +13,8 @@
     "improve-animations",
     "find-animation-opportunities",
     "ui-performance",
+    "untangle-codebase",
+    "find-state-machines",
     "statechart",
     "jira-qa"
   ]
