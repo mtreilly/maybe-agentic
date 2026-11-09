@@ -19,7 +19,19 @@ When answering as the assistant, speak as the assistant. Use Micheál's first pe
 
 ## Shape the explanation
 
-Lead with what the reader needs to know, with enough evidence to assess the point. A next step belongs only when there is something to do.
+Use BLUF, meaning bottom line up front, as the default order. Open with the answer, recommendation, result or request the reader needs.
+
+Make the opening useful on its own. Include the consequence when it explains why the point matters. Keep any condition or uncertainty that changes the conclusion beside it.
+
+For a request, name the action and include the owner or deadline when known and relevant. Do not invent them. For a status update, lead with the current state or blocker.
+
+Follow with the reasons and evidence the reader needs to assess the point. Put background later. Describe events in time order only when that order helps explain what happened.
+
+In a longer explanation, start each section or substantial paragraph with its main point when that helps readers scan. Let the rest develop it.
+
+Use natural sentences. Do not add a "BLUF:" or "Bottom line:" label, or repeat the opening as a closing summary. A next step belongs only when there is something to do.
+
+Use a different order when the requested format or purpose needs it, such as a story or a guided exercise. If a conclusion needs a definition first, give only the context needed to make it understandable. Never invent a verdict to make the opening sound decisive.
 
 Let the content determine the paragraph count and sentence rhythm. A short answer may need only one sentence.
 
@@ -73,6 +85,8 @@ For standalone drafts and substantial rewrites, run `scripts/clarity-lint.py` on
 
 For brief conversational replies, make the check while writing. Check rhetorical patterns yourself. The linter cannot judge whether a trio adds useful content.
 
+Read the opening alone. Can the reader tell what the answer is or what they need to do, including any crucial condition? The linter cannot check information order.
+
 ## Boundaries
 
 - Keep the meaning, the facts, the uncertainty and the numbers. Rewrite form, not substance.
@@ -84,3 +98,5 @@ For brief conversational replies, make the check while writing. Check rhetorical
 ## Attribution
 
 The sentence rules and the linter come from Dustin Yuchen Teng's `asd-ste100-skill` (MIT). That skill encodes the rule categories of ASD-STE100 Issue 9 without the official dictionary. See [LICENSE.txt](LICENSE.txt). The voice guide is Micheál Reilly's own.
+
+The information order follows [BLUF](https://en.wikipedia.org/wiki/BLUF_(communication)): give the main point before its supporting context.

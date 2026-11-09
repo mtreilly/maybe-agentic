@@ -1,6 +1,6 @@
 # Before and after
 
-Real comments rewritten in this voice. Facts unchanged.
+Real comments and constructed examples rewritten in this voice. Facts unchanged. The examples about information order below are constructed.
 
 ## A security scanner reply on a merge request
 
@@ -33,6 +33,42 @@ What is wrong with it: one 45-word sentence with a semicolon, "persisted owner" 
 **After**
 
 > This file does too many jobs. It holds the upload and delete requests, the React hooks, the token expiry check and the error wording, so the bulk pages end up importing a hook file just to call a plain function. It also imports from the `@root/packages/api` barrel, which our frontend guide says not to do. Split it into a request file, a hook file and a small token helper, with direct imports.
+
+## Information order: a request
+
+**Before**
+
+> The release is scheduled for Thursday. QA passed, and the migration takes about ten minutes. We need your approval by Wednesday noon to deploy.
+
+**After**
+
+> Please approve the deployment by Wednesday noon for Thursday's release. QA passed. The migration takes about ten minutes.
+
+The request and deadline come first. The evidence follows.
+
+## Information order: a status update
+
+**Before**
+
+> I merged the fix and ran the tests. The build then failed because the signing certificate expired. The release is blocked until we renew it.
+
+**After**
+
+> The release is blocked until we renew the expired signing certificate. The build failed. I merged the fix and ran the tests.
+
+The blocker matters first. The work history supports it.
+
+## Information order: a conditional recommendation
+
+**Before**
+
+> The queue change passed local tests. We have not checked it under production load. I think we can deploy if the load test passes.
+
+**After**
+
+> I think we can deploy if the load test passes. The queue change passed local tests. We have not checked it under production load.
+
+The recommendation comes first. Its condition and uncertainty stay attached.
 
 ## What stayed the same in every rewrite
 
