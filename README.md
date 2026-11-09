@@ -107,6 +107,17 @@ Maintain our own skills in `skills/<name>/` and add `./skills/<name> <name>` to 
 
 ## Updates
 
+Use these shortcuts from the repository directory, or invoke either script by absolute path from anywhere:
+
+```sh
+./update-skills.sh           # pull with --ff-only, then update all skills globally
+./update-selected-skills.sh  # update untangle-codebase, find-state-machines and plain-voice globally
+```
+
+Both use the default clients: Codex, Claude Code, OpenCode and Pi. The selected-skills shortcut uses the current checkout without pulling. Start a new agent session after updating.
+
+For other selections or installation scopes:
+
 ```sh
 ./setup.sh --update --profile all
 ./setup.sh --local --update
