@@ -218,7 +218,8 @@ Per-machine exceptions go in an untracked `mcp/local.json`. Use
 Setup only touches servers named in the manifest. Before the first change in a
 run it copies each file to `<file>.maybe-agentic.bak`. Source servers launch
 with the `node` on `PATH` when setup ran (pass `--node` to choose another);
-prefer a stable path such as `/opt/homebrew/bin/node` over a versioned nvm path.
+for mise-managed Node, use `--node "$(mise which node)"` to select its installed
+executable. Rerun setup after upgrading that runtime so the recorded path stays current.
 
 To upgrade a source server, change its `ref` and rerun setup. Old builds stay
 under `~/.agents/mcp/NAME/` until you delete them. To add a server, add an
