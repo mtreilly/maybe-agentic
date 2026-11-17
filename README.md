@@ -38,6 +38,7 @@ This is the single-repository starting point from Cloudflare's [Build your own v
 
 Our own skills:
 
+- [prune-tests](skills/prune-tests/SKILL.md) trims redundant tests and rewrites brittle assertions. Use `$prune-tests` with an optional path. Before deleting a duplicate, it identifies the surviving test that catches the same regression.
 - [ui-performance](skills/ui-performance/SKILL.md): diagnose rendering, animation, and scrolling bottlenecks using guidance adapted from Emil's performance cheatsheet.
 - [systematic-debugging](skills/systematic-debugging/SKILL.md): investigate bugs, test and build failures, flaky behavior, and integrations using guidance adapted from Superpowers and Matt Pocock.
 - [codebase-design](skills/codebase-design/SKILL.md): improve interfaces and concentrate complexity, changes, and verification using guidance adapted from Matt Pocock.
