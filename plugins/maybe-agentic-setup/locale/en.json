@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Agentic setup",
+    "description": "Checks the maybe-agentic skill manifest, profiles, client links and MCP servers, and reports what is out of sync. Ships a jig for tuning its primitives."
+  }
+}

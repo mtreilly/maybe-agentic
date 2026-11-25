@@ -1,0 +1,3 @@
+- insert:
+    - id: maybe-agentic-setup
+      name: '@local/dsh-maybe-agentic-setup'
