@@ -1,16 +1,16 @@
 {
-  "description": "Core plus architecture, contract integrity, and security audits.",
+  "description": "Core plus architecture guardrails, contract integrity, safe migrations, live incident triage, benchmarks, and security audits.",
   "extends": [
     "core"
   ],
   "skills": [
     "architecture-guardrails",
     "artifact-integrity",
-    "blast-radius",
     "benchmark-checklist",
     "untangle-codebase",
     "find-state-machines",
-    "statechart",
-    "security-audit"
+    "security-audit",
+    "db-migrations",
+    "incident-triage"
   ]
 }

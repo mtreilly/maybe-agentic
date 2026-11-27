@@ -38,23 +38,25 @@ This is the single-repository starting point from Cloudflare's [Build your own v
 
 Our own skills:
 
-- [design-review](skills/design-review/SKILL.md): review UI/UX designs through 14 lenses, with evidence, strengths to preserve, severity, scores, and prioritised improvements. Included in the `frontend` profile. Invoke with `/design-review` in clients that support slash commands, or `$design-review` in Codex, followed by a design, screenshot, prototype, or URL. Install or refresh it with `./setup.sh --skill design-review`.
-- [agents-md-eval](skills/agents-md-eval/SKILL.md): evaluate, prune, and validate `AGENTS.md`, `CLAUDE.md`, and repository docs using a two-stage multi-model ablation (Stage 1 blank-`AGENTS.md` discoverability quiz, Stage 2 un-hinted A/B task ablation) orchestrated in T3 Code, plus zero-reference scratch-doc cleanup and inline HTML scorecards. Included in the `research` profile.
-- [prune-tests](skills/prune-tests/SKILL.md) trims redundant tests and rewrites brittle assertions. Use `$prune-tests` with an optional path. Before deleting a duplicate, it identifies the surviving test that catches the same regression.
-- [ui-performance](skills/ui-performance/SKILL.md): diagnose rendering, animation, and scrolling bottlenecks using guidance adapted from Emil's performance cheatsheet.
-- [systematic-debugging](skills/systematic-debugging/SKILL.md): investigate bugs, test and build failures, flaky behavior, and integrations using guidance adapted from Superpowers and Matt Pocock.
-- [codebase-design](skills/codebase-design/SKILL.md): improve interfaces and concentrate complexity, changes, and verification using guidance adapted from Matt Pocock.
-- [untangle-codebase](skills/untangle-codebase/SKILL.md): make bounded structural changes based on concrete maintenance problems, with behaviour checks and explicit equivalence limits.
-- [find-state-machines](skills/find-state-machines/SKILL.md): recover implicit machines from real code, then trace event-order risks, missing transitions, and unclear state ownership. Read-only discovery.
-- [handoff](skills/handoff/SKILL.md): save scope, authorization, verified state, artifact pointers, and next actions for another session.
-- [teach](skills/teach/SKILL.md): teach through focused lessons, practice, feedback, and optional persistent learning records.
-- [wait-what](skills/wait-what/SKILL.md): re-explain a confusing message in plain language with the missing context.
-- [plain-voice](skills/plain-voice/SKILL.md): default voice for most prose, including ordinary answers and drafts. Applies alongside task-specific skills without an explicit rewrite request. A different requested voice takes precedence.
-- [raise-the-bar](skills/raise-the-bar/SKILL.md): raise the standard of a task without expanding its scope. Invoke with `$raise-the-bar` or ask to "raise the bar" or "be ambitious".
+- [design-review](skills/design-review/SKILL.md): review UI/UX designs in quick mode (single screen/screenshot) or full 14-lens mode, with evidence labels, live accessibility checks, strengths to preserve, severity, scores, and prioritised improvements. Included in `frontend` and `mobile`.
+- [agents-md-eval](skills/agents-md-eval/SKILL.md): empirically evaluate `AGENTS.md`, `CLAUDE.md`, and repository docs using a two-stage multi-model ablation (Stage 1 blank-`AGENTS.md` discoverability quiz, Stage 2 un-hinted A/B task adherence). Explicit-invocation only; report-only by default. Included in `research`.
+- [feature-planning](skills/feature-planning/SKILL.md): scope an ambiguous feature or multi-step change into concrete invariants, non-goals, riskiest-unknown-first slices, and completion evidence before coding. Included in `core`.
+- [test-design](skills/test-design/SKILL.md): design and write high-signal behavioral tests at the boundary callers depend on. Included in `core`.
+- [prune-tests](skills/prune-tests/SKILL.md): trim redundant tests and rewrite brittle private-state assertions while preserving regression coverage. Opt-in specialist (`./setup.sh --skill prune-tests`).
+- [db-migrations](skills/db-migrations/SKILL.md): design and review zero-downtime schema migrations, online indexes, batched idempotent backfills, mixed-version compatibility, and abort/rollback limits. Included in `backend`.
+- [incident-triage](skills/incident-triage/SKILL.md): triage live or staging production incidents, error spikes, and latency regressions using logs, traces, metrics, and error trackers (such as Sentry or Cloudflare Observability). Included in `backend`.
+- [ui-performance](skills/ui-performance/SKILL.md): diagnose rendering, animation, and scrolling bottlenecks using guidance adapted from Emil's performance cheatsheet. Included in `frontend` and `mobile`.
+- [systematic-debugging](skills/systematic-debugging/SKILL.md): investigate bugs, test and build failures, flaky behavior, and integrations using guidance adapted from Superpowers and Matt Pocock. Included in `core`.
+- [codebase-design](skills/codebase-design/SKILL.md): design types, interfaces, ownership, and module boundaries before substantial implementation or when complexity leaks into callers (consolidates Matt Pocock's `codebase-design` and pstack's `architect` with `references/design-red-flags.md`). Included in `core`.
+- [untangle-codebase](skills/untangle-codebase/SKILL.md): make bounded structural changes based on concrete maintenance problems, with behaviour checks and explicit equivalence limits. Included in `frontend`, `backend`, and `mobile`.
+- [find-state-machines](skills/find-state-machines/SKILL.md): recover implicit machines from real code, then trace event-order risks, missing transitions, and unclear state ownership. Read-only discovery. Included in `frontend`, `backend`, and `mobile`.
+- [handoff](skills/handoff/SKILL.md): save scope, authorization, verified state, artifact pointers, and next actions for another session. Included in `core`.
+- [teach](skills/teach/SKILL.md): teach through focused lessons, practice, feedback, and optional persistent learning records. Opt-in specialist (`./setup.sh --skill teach`).
+- [wait-what](skills/wait-what/SKILL.md): re-explain a confusing message in plain language with the missing context. Included in `personal`.
 
-`untangle-codebase` and `find-state-machines` are included in the `frontend` and `backend` profiles. Use `$find-state-machines` to recover behaviour and risks, then `$untangle-codebase` to make structural changes when requested. Either works independently. The existing `$statechart` skill provides explicitly requested TLA+ modelling and bounded checks. These skills do not require each other. The untangle workflow was inspired by our review of [Caldo's skill](https://github.com/caldoai/skills/blob/main/skills/untangle-codebase/SKILL.md); the instructions here are locally authored.
+`untangle-codebase` and `find-state-machines` are included in `frontend`, `backend`, and `mobile`. Use `find-state-machines` to recover behaviour and risks, then `untangle-codebase` to make structural changes when requested. Either works independently. The opt-in `statechart` skill provides explicitly requested TLA+ modelling and bounded checks (`./setup.sh --skill statechart`). The untangle workflow was inspired by our review of [Caldo's skill](https://github.com/caldoai/skills/blob/main/skills/untangle-codebase/SKILL.md); the instructions here are locally authored.
 
-`handoff`, `teach`, `wait-what`, and `statechart` preserve upstream's explicit invocation settings for Codex and Claude Code. Invoke them by name, such as `$teach` in Codex or `/teach` in Claude Code. Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
+`handoff`, `teach`, `wait-what`, `statechart`, `agents-md-eval`, `poteto-mode`, and `automate-me` set `disable-model-invocation: true` paired with `agents/openai.yaml` (`allow_implicit_invocation: false`) for explicit invocation across Codex and Claude Code. Invoke them by name (for example, `$handoff` in Codex or `/handoff` in Claude Code). Pi and OpenCode may handle invocation settings differently; request the named skill through the client's supported mechanism. The other maintained skills allow automatic selection when relevant.
 
 Setup installs globally for the current user by default, with a canonical copy under `~/.agents/skills/` and client links in their user-level skill directories. This targets Codex, Claude Code, OpenCode, and Pi across projects. Use `--local` to install under this repository’s `.agents/skills/` instead. The skill links above refer to the existing repository-local copies.
 
@@ -62,16 +64,14 @@ Setup installs globally for the current user by default, with a canonical copy u
 
 These locally maintained adaptations are self-contained. Supporting references and scripts are bundled; they do not require sibling skills, Cursor plugins, named models, or Cursor transcript paths. Delegation is optional and follows the active session authorization.
 
-- [create-verification-skill](skills/create-verification-skill/SKILL.md)
-- [maintain-verification-skill](skills/maintain-verification-skill/SKILL.md)
+- [verification-skill](skills/verification-skill/SKILL.md): create, audit, or repair a project-specific verification skill, feature map, and live drive recipe (consolidates `create-verification-skill` and `maintain-verification-skill`). Included in `core`.
 - [benchmark-checklist](skills/benchmark-checklist/SKILL.md)
 - [correct](skills/correct/SKILL.md)
 - [blast-radius](skills/blast-radius/SKILL.md)
 - [show-me-your-work](skills/show-me-your-work/SKILL.md)
 - [how](skills/how/SKILL.md)
 - [why](skills/why/SKILL.md)
-- [architect](skills/architect/SKILL.md)
-- [statechart](skills/statechart/SKILL.md): check bounded TLA+ models with TLC and draw Mermaid statecharts with counterexample paths. Included in the `frontend` and `backend` profiles. Requires a supported TypeScript runtime and Java/TLC, either supplied through `TLA2TOOLS` and `JAVA` or installed by mise. Invoke with `$statechart` or `/statechart`.
+- [statechart](skills/statechart/SKILL.md): check bounded TLA+ models with TLC and draw Mermaid statecharts with counterexample paths. Opt-in specialist (`./setup.sh --skill statechart`). Requires a supported TypeScript runtime and Java/TLC, either supplied through `TLA2TOOLS` and `JAVA` or installed by mise. Its upstream engine test corpus lives outside the installable skill bundle in `tests/statechart-engine-test/`.
 - [interrogate](skills/interrogate/SKILL.md)
 - [reflect](skills/reflect/SKILL.md)
 - [automate-me](skills/automate-me/SKILL.md)
@@ -79,7 +79,7 @@ These locally maintained adaptations are self-contained. Supporting references a
 - [deslop-code](skills/deslop-code/SKILL.md)
 - [deslop-writing](skills/deslop-writing/SKILL.md)
 
-`deslop-code` adapts Cursor Team Kit’s `deslop`; `deslop-writing` adapts pstack’s `unslop`. `poteto-mode` is a smaller portable edition, activated by a request to use that mode. Provenance and upstream licenses are included in each skill folder. Upstream refreshes do not automatically replace these adaptations.
+`deslop-code` adapts Cursor Team Kit’s `deslop`; `deslop-writing` adapts pstack’s `unslop` for portable, voice-preserving prose cleanup. `poteto-mode` is a smaller portable edition, activated explicitly. Provenance and upstream licenses are included in each skill folder. Upstream refreshes do not automatically replace these adaptations.
 
 ## Project quality skills
 
@@ -98,30 +98,31 @@ Run the setup script from this directory (or invoke it by absolute path from any
 ./setup.sh                         # core profile
 ./setup.sh --profile frontend
 ./setup.sh --profile backend --profile research
+./setup.sh --profile mobile --profile personal
 ./setup.sh --profile all             # complete manifest
 ./setup.sh --dry-run
 ./setup.sh --local
 ./setup.sh --agent codex --agent claude-code
 ```
 
-The default profile is `core` (eight skills); the default clients are Codex, Claude Code, OpenCode, and Pi. Profiles select what is installed or updated. Existing extra skills remain discoverable until explicitly removed; profile selection does not uninstall skills. Installation requires Python 3, Node.js, npm/npx, Git, and network access. Use `--profile frontend`, `--profile backend`, or `--profile research` to extend the default core selection; repeat `--profile` to combine profiles, or use `--profile all` for the full catalog. Add repository/skill pairs to `skills.txt` to expand the selection. Setup installs the latest upstream content and refreshes client links; it does not restore a historical snapshot from the lockfile. Repeated runs may replace upstream-managed files.
+The default profile is `core` (11 skills); the default clients are Codex, Claude Code, OpenCode, and Pi. Profiles select what is installed or updated. Existing extra skills remain discoverable until explicitly removed; profile selection does not uninstall skills. Installation requires Python 3, Node.js, npm/npx, Git, and network access. Use `--profile frontend`, `--profile backend`, `--profile mobile`, `--profile research`, or `--profile personal` to extend `core`; repeat `--profile` to combine profiles, or use `--profile all` for the full catalog. Four specialist skills (`statechart`, `emil-design-eng`, `teach`, `prune-tests`) sit intentionally in an opt-in tier installed via `--skill NAME` or `--profile all`. Add repository/skill pairs to `skills.txt` to expand the selection. Setup installs the latest upstream content and refreshes client links; it does not restore a historical snapshot from the lockfile. Repeated runs may replace upstream-managed files.
 
 Maintain our own skills in `skills/<name>/` and add `./skills/<name> <name>` to `skills.txt`. Setup installs a discoverable copy and client links through the CLI. Edit the source under `skills/`, then rerun setup to refresh the installed copy.
 
 ## Updates
 
-Use these shortcuts from the repository directory, or invoke either script by absolute path from anywhere:
+Use this shortcut from the repository directory, or invoke it by absolute path from anywhere:
 
 ```sh
 ./update-skills.sh           # pull with --ff-only, then update all skills globally
-./update-selected-skills.sh  # update untangle-codebase, find-state-machines and plain-voice globally
 ```
 
-Both use the default clients: Codex, Claude Code, OpenCode and Pi. The selected-skills shortcut uses the current checkout without pulling. Start a new agent session after updating.
+It uses the default clients: Codex, Claude Code, OpenCode, and Pi. Start a new agent session after updating.
 
-For other selections or installation scopes:
+For targeted or profile-scoped updates:
 
 ```sh
+./setup.sh --update --profile personal
 ./setup.sh --update --profile all
 ./setup.sh --local --update
 ./setup.sh --update --skill blast-radius  # refresh one skill for all default clients
@@ -138,8 +139,10 @@ Use repeated `--skill NAME` flags to refresh specific manifest entries. Without 
 ## Profiles and doctor
 
 Profiles live in `profiles/*.json` and select names from `skills.txt`. `frontend`,
-`backend`, and `research` inherit `core`; repeat `--profile` to combine them.
-`all` selects the complete manifest. Selection is validated before installation.
+`backend`, `mobile`, `research`, and `personal` inherit `core`; repeat `--profile`
+to combine them. `all` selects the complete manifest. Four specialist skills
+(`statechart`, `emil-design-eng`, `teach`, `prune-tests`) remain opt-in via
+`--skill NAME` or `--profile all`. Selection is validated before installation.
 Update runs respect the selected profile too.
 
 ```sh
@@ -151,9 +154,11 @@ Update runs respect the selected profile too.
 
 Doctor defaults to the global installation, matching setup. Use `--local` to
 inspect this repository's installed copies. It needs only Python 3 and is
-read-only. It checks profile/manifest validity,
-required frontmatter, bundled Markdown links, local source/install drift,
-the selected scope's lock entries, client links, and executable availability.
+read-only. It checks profile/manifest validity, YAML frontmatter syntax (including
+multiline descriptions), invocation-policy parity (`disable-model-invocation` vs
+`agents/openai.yaml`), executable bits on bundled scripts, bundled Markdown links,
+local source/install drift, lockfile sources and hashes, client links, unmanaged
+global extras, and executable availability.
 Global checks use `~/.agents/skills` and `~/.agents/.skill-lock.json`
 (or `$XDG_STATE_HOME/skills/.skill-lock.json` when configured). The pinned CLI
 omits global lock records for local-source installs; doctor compares those copies
@@ -231,17 +236,23 @@ that must exist). Any server takes `optional`, `note`, `startup_timeout_sec`
 and `tool_timeout_sec`. Codex uses both timeouts,
 OpenCode only the startup timeout, and Claude Code and Pi neither.
 
+## Setup status plugin
+
+[`plugins/maybe-agentic-setup`](plugins/maybe-agentic-setup/index.js) is an optional read-only host/browser plugin exposing the `agentic_setup_status` tool and `GET /maybe-agentic/status` route. It inspects `skills.txt`, `profiles/*.json`, global `~/.agents/skills/`, client skill links, and `mcp/servers.json` prerequisites without shelling out.
+
 ## Skill evaluations
 
-[The evaluation suite](evals/README.md) contains paired baseline/skill tasks for
-debugging, project quality setup, handoff, and CLI verification. It prepares
-isolated workspaces, snapshots the selected skill, captures client output and
-elapsed time, and grades concrete outputs. Human review covers judgment and
-execution evidence that the objective checks cannot establish. Routing prompts
-include requests where these skills should stay inactive.
+[The evaluation suite](evals/README.md) contains 7 paired baseline/skill tasks
+(`debugging`, `quality`, `handoff`, `verification`, `blast-radius`, `prune-tests`,
+and `design-review`) plus 22 routing prompts covering collision clusters,
+explicit-only skills, and negative controls. It prepares isolated workspaces,
+snapshots the selected skill, captures client output and elapsed time, and grades
+concrete outputs. Human review covers judgment and execution evidence that the
+objective checks cannot establish.
 
 ```sh
 python3 -B -m unittest discover -s tests -v
+python3 -B evals/run.py routing
 ```
 
 These regressions validate the toolkit and graders. Live model comparisons are

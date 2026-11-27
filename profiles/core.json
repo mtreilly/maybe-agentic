@@ -1,13 +1,16 @@
 {
-  "description": "Everyday implementation, diagnosis, quality setup, review, and continuation.",
+  "description": "Everyday planning, implementation, diagnosis, testing, quality gates, review, impact analysis, and continuation.",
   "skills": [
+    "feature-planning",
     "systematic-debugging",
     "codebase-design",
+    "test-design",
     "project-quality-setup",
     "quality-gate-audit",
     "interrogate",
+    "blast-radius",
     "deslop-code",
     "handoff",
-    "create-verification-skill"
+    "verification-skill"
   ]
 }

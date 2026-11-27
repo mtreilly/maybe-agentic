@@ -1,0 +1,11 @@
+{
+  "description": "Core plus personal working-style modes and plain-language recovery commands.",
+  "extends": [
+    "core"
+  ],
+  "skills": [
+    "poteto-mode",
+    "automate-me",
+    "wait-what"
+  ]
+}

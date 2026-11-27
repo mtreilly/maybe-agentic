@@ -1,6 +1,7 @@
 ---
 name: automate-me
-description: Create or revise a personal agent working-style skill from repeated preferences and explicit user choices. Use when the user asks to capture how they work, personalize agent conventions, or update their personal mode.
+description: Create or revise a personal agent working-style skill from repeated preferences and explicit user choices. Use when explicitly asked to capture how the user works, personalize agent conventions, or update their personal mode.
+disable-model-invocation: true
 ---
 
 # Capture a personal working style
@@ -17,7 +18,7 @@ Ask concise questions only for choices that materially affect the skill and cann
 
 ## Draft the skill
 
-Use a lowercase name such as `<handle>-mode` matching its directory and standard frontmatter with name and description. Trigger on the chosen mode name and requests to work in that style, not generic coding keywords. Follow the project's skill convention, defaulting to `skills/<handle>-mode/` for maintained source and `.agents/skills/` for project discovery where appropriate.
+Use a lowercase name such as `<handle>-mode` matching its directory and standard frontmatter with name and description. Trigger on the chosen mode name and explicit requests to work in that style, not generic coding keywords. Follow the project's skill convention: write under `skills/<handle>-mode/` in a source-maintained skill toolkit, or `.agents/skills/<handle>-mode/` in a consumer project without a maintained source tree.
 
 Include only specific choices that change behavior. Common sections are response style, autonomy, verification, tools/process, and code discipline, but omit sections without evidence. Use generic terms such as "the user" inside instructions. Preserve user intent, permissions, and the current task scope; a style skill is not blanket authorization for external actions.
 

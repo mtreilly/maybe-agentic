@@ -1,0 +1,16 @@
+{
+  "description": "Core plus mobile web, Expo/React Native motion, Swift, UI stress testing, performance, and design review.",
+  "extends": [
+    "core"
+  ],
+  "skills": [
+    "mobile-native",
+    "animate-expo",
+    "write-swift",
+    "ui-performance",
+    "break-ui",
+    "untangle-codebase",
+    "find-state-machines",
+    "design-review"
+  ]
+}

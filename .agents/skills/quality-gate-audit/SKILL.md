@@ -1,6 +1,6 @@
 ---
 name: quality-gate-audit
-description: Audit whether a project’s lint, type, test, and validation gates check the intended inputs and report trustworthy results. Use for stale check runners, local/CI divergence, false passes, incomplete scope, or checking-system reviews.
+description: Audit existing lint, type, test, and validation gates to prove they inspect the intended inputs and report trustworthy failures. Use for stale check runners, local/CI divergence, false passes, or incomplete scope; to add missing baseline tooling, use project-quality-setup.
 ---
 
 # Audit the checking system

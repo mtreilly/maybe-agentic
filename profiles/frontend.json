@@ -1,10 +1,9 @@
 {
-  "description": "Core plus UI craft, interaction verification, animation, and performance.",
+  "description": "Core plus web UI craft, design review, interaction verification, motion, and rendering performance.",
   "extends": [
     "core"
   ],
   "skills": [
-    "emil-design-eng",
     "animate",
     "animation-vocabulary",
     "break-ui",
@@ -15,7 +14,6 @@
     "ui-performance",
     "untangle-codebase",
     "find-state-machines",
-    "statechart",
     "design-review"
   ]
 }

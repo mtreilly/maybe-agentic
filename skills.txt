@@ -20,15 +20,13 @@ cloudflare/security-audit-skill security-audit
 ./skills/handoff handoff
 ./skills/teach teach
 ./skills/wait-what wait-what
-./skills/create-verification-skill create-verification-skill
-./skills/maintain-verification-skill maintain-verification-skill
+./skills/verification-skill verification-skill
 ./skills/benchmark-checklist benchmark-checklist
 ./skills/correct correct
 ./skills/blast-radius blast-radius
 ./skills/show-me-your-work show-me-your-work
 ./skills/how how
 ./skills/why why
-./skills/architect architect
 ./skills/statechart statechart
 ./skills/interrogate interrogate
 ./skills/reflect reflect
@@ -42,6 +40,8 @@ cloudflare/security-audit-skill security-audit
 ./skills/prune-tests prune-tests
 ./skills/agents-md-eval agents-md-eval
 ./skills/artifact-integrity artifact-integrity
-./skills/plain-voice plain-voice
-./skills/raise-the-bar raise-the-bar
 ./skills/design-review design-review
+./skills/db-migrations db-migrations
+./skills/incident-triage incident-triage
+./skills/test-design test-design
+./skills/feature-planning feature-planning

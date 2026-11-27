@@ -1,0 +1,5 @@
+interface:
+  display_name: "Poteto Mode"
+  short_description: "Task-sized evidence-driven engineering playbooks"
+policy:
+  allow_implicit_invocation: false

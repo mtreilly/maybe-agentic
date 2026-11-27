@@ -1,6 +1,6 @@
 ---
 name: architecture-guardrails
-description: Make established project architecture rules enforceable through types, import boundaries, contract checks, or small static checks. Use when architectural drift needs prevention or a repository convention needs an executable guard.
+description: Make an established project architecture rule or boundary enforceable through types, import restrictions, contract checks, or static guards. Use when a stated repository convention needs an executable guard; for diagnosing recurring mistakes from history, use correct.
 ---
 
 # Enforce architecture contracts

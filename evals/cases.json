@@ -1,33 +1,107 @@
 {
-  "version": 1,
+  "version": 2,
   "cases": [
     {
-      "id": "debugging", "skill": "systematic-debugging", "fixture": "debugging",
+      "id": "debugging",
+      "skill": "systematic-debugging",
+      "fixture": "debugging",
       "prompt": "A zero-percent coupon raises ValueError. Fix the cause, preserve rejection of out-of-range discounts, and verify the original case and existing behavior. Change only relevant files. Record what failed and what you checked in result.json with keys summary, root_cause, checks (an array).",
-      "manual_review": ["Reproduced the original symptom before editing", "Explanation follows the actual cause", "Changes stayed focused; no test-only production seams"]
+      "manual_review": [
+        "Reproduced the original symptom before editing",
+        "Explanation follows the actual cause",
+        "Changes stayed focused; no test-only production seams"
+      ]
     },
     {
-      "id": "quality", "skill": "project-quality-setup", "fixture": "quality",
+      "id": "quality",
+      "skill": "project-quality-setup",
+      "fixture": "quality",
       "prompt": "Review this project's quality setup and recommend the smallest useful improvement. Inspect the current command and workspace coverage. This is recommendations only; do not edit project files or install dependencies. Write proposal.json with existing_commands (array), gaps (array of objects with risk and affected_paths), recommendations (array of objects with command, scope, rationale), and limitations (array).",
-      "manual_review": ["Finds the omitted web workspace from executable evidence", "Improvement has a runnable command and clear scope", "Avoids irrelevant tooling and claims beyond static validation"]
+      "manual_review": [
+        "Finds the omitted web workspace from executable evidence",
+        "Improvement has a runnable command and clear scope",
+        "Avoids irrelevant tooling and claims beyond static validation"
+      ]
     },
     {
-      "id": "handoff", "skill": "handoff", "fixture": "handoff",
+      "id": "handoff",
+      "skill": "handoff",
+      "fixture": "handoff",
       "prompt": "Use context.json and docs/plan.md to save a handoff for a fresh agent. Keep the plan authoritative and distinguish past verification from current confidence. Write handoff.json with objective, authorized, plan_path, completed (array), pending (array), verification (object with command, result, covers_current_state), and next_action. Paths must resolve from this workspace. Do not perform the pending implementation.",
-      "manual_review": ["Preserves narrow authorization", "Does not convert historical passing tests into current evidence", "Next action addresses the actual remaining work"]
+      "manual_review": [
+        "Preserves narrow authorization",
+        "Does not convert historical passing tests into current evidence",
+        "Next action addresses the actual remaining work"
+      ]
     },
     {
-      "id": "verification", "skill": "create-verification-skill", "fixture": "verification",
-      "prompt": "Create a self-contained verification skill for notes.py. Use its real CLI to store a note and read it in a fresh process using isolated state. Prove persistence, capture evidence that survives cleanup, and remove owned scratch state. Save the skill under .agents/skills/verify-notes/SKILL.md and a feature map. Also write recipe.json with put (array of CLI arguments after notes.py), get (array of arguments), expected (exact retrieved text), evidence_path (a surviving file), and scratch_path (the state file cleaned up). Use relative workspace paths; use the same --state path for put and get. Execute the recipe before reporting completion.",
-      "manual_review": ["Generated skill is actionable and self-contained", "Ran put and get in distinct processes before reporting completion", "Evidence supports persistence rather than merely a success message", "Owned cleanup preserves evidence and unrelated files"]
+      "id": "verification",
+      "skill": "verification-skill",
+      "fixture": "verification",
+      "prompt": "Create a self-contained verification skill for notes.py. Use its real CLI to store a note and read it in a fresh process using isolated state. Prove persistence, capture evidence that survives cleanup, and remove owned scratch state. Save the skill under .agents/skills/verify-notes/SKILL.md and a feature map under .agents/skills/verify-notes/features/README.md. Also write recipe.json with put (array of CLI arguments after notes.py), get (array of arguments), expected (exact retrieved text), evidence_path (a surviving file), and scratch_path (the state file cleaned up). Use relative workspace paths; use the same --state path for put and get. Execute the recipe before reporting completion.",
+      "manual_review": [
+        "Generated skill is actionable and self-contained",
+        "Ran put and get in distinct processes before reporting completion",
+        "Evidence supports persistence rather than merely a success message",
+        "Owned cleanup preserves evidence and unrelated files"
+      ]
+    },
+    {
+      "id": "blast-radius",
+      "skill": "blast-radius",
+      "fixture": "blast-radius",
+      "prompt": "Review diff.patch for blast radius and revocation safety across this workspace. This is a read-only review; do not edit existing source files. Write impact.json with summary, confirmed_risks (array of objects with path, mechanism, impact), unproved_assumptions (array), and verification_limits (array).",
+      "manual_review": [
+        "Traces beyond diff.patch to share_link.py without modifying source",
+        "Separates confirmed source evidence from unproved assumptions",
+        "Names the cheapest meaningful check for revoked share links"
+      ]
+    },
+    {
+      "id": "prune-tests",
+      "skill": "prune-tests",
+      "fixture": "prune-tests",
+      "prompt": "Prune redundant tests and rewrite brittle private-state assertions in test_cart.py while preserving regression coverage for cart.py. Do not modify cart.py. Write pruned.json with kept (array), rewritten (array), and deleted (array of objects with test and surviving_test or reason).",
+      "manual_review": [
+        "Rewrites private _items check to use public Cart.items() API",
+        "Deletes only truly redundant duplicate while keeping distinct guards",
+        "Reruns affected tests after edits"
+      ]
+    },
+    {
+      "id": "design-review",
+      "skill": "design-review",
+      "fixture": "design-review",
+      "prompt": "Review checkout_modal.html in quick mode. Do not modify checkout_modal.html. Write review.json with mode, findings (array of objects with id, evidence_label, location, principle, severity, recommendation), strengths (array), and not_evaluated (array).",
+      "manual_review": [
+        "Uses explicit evidence labels without claiming runtime/screen-reader conformance",
+        "Identifies missing accessible name, low contrast, focus suppression, and undifferentiated destructive action",
+        "Appropriately scopes output to quick mode for a single static dialog"
+      ]
     }
   ],
   "routing_cases": [
-    {"prompt": "Fix the coupon validation bug", "expected": ["systematic-debugging"]},
-    {"prompt": "Recommend baseline checks for this project", "expected": ["project-quality-setup"]},
-    {"prompt": "Save a handoff for a fresh session", "expected": ["handoff"]},
-    {"prompt": "Give agents a reusable recipe to verify this CLI", "expected": ["create-verification-skill"]},
-    {"prompt": "Explain this function in one sentence", "expected": []},
-    {"prompt": "Change this label to Save", "expected": []}
+    {"prompt": "Fix the coupon validation bug", "expected": ["systematic-debugging"], "cluster": "core"},
+    {"prompt": "Recommend missing baseline lint and test checks for this new repo", "expected": ["project-quality-setup"], "cluster": "quality"},
+    {"prompt": "Our CI checks pass even when nested packages fail lint — audit the checking gates", "expected": ["quality-gate-audit"], "cluster": "quality"},
+    {"prompt": "Enforce our documented rule that UI code must only import generated API clients", "expected": ["architecture-guardrails"], "cluster": "guardrails"},
+    {"prompt": "Agents keep making the same wrong date-parsing mistake across PRs — stop this recurring failure", "expected": ["correct"], "cluster": "guardrails"},
+    {"prompt": "Design the types and module interface before we implement the billing client", "expected": ["codebase-design"], "cluster": "design-refactor"},
+    {"prompt": "Untangle this legacy checkout workflow across modules without changing observable behavior", "expected": ["untangle-codebase"], "cluster": "design-refactor"},
+    {"prompt": "Challenge this PR approach and tell me where the assumptions break against its intent", "expected": ["interrogate"], "cluster": "review"},
+    {"prompt": "What could this token-revocation change break beyond direct callers and caches?", "expected": ["blast-radius"], "cluster": "review"},
+    {"prompt": "Give agents a reusable recipe to launch and verify this CLI", "expected": ["verification-skill"], "cluster": "verification"},
+    {"prompt": "Our verify-app skill and feature map drifted after the route refactor — audit and repair it", "expected": ["verification-skill"], "cluster": "verification"},
+    {"prompt": "Rewrite this team README to remove corporate filler while keeping its existing tone and style", "expected": ["deslop-writing"], "cluster": "writing"},
+    {"prompt": "Design high-signal behavioral tests for the new webhook retry handler", "expected": ["test-design"], "cluster": "testing"},
+    {"prompt": "Trim duplicate tests and brittle private-state assertions from this test suite", "expected": ["prune-tests"], "cluster": "testing"},
+    {"prompt": "Plan a zero-downtime Postgres column rename and backfill across rolling deploys", "expected": ["db-migrations"], "cluster": "backend"},
+    {"prompt": "Production 500s spiked after deploy — triage Sentry errors and Cloudflare logs", "expected": ["incident-triage"], "cluster": "backend"},
+    {"prompt": "Break this ambiguous multi-tenant export feature into a concrete implementation plan before coding", "expected": ["feature-planning"], "cluster": "planning"},
+    {"prompt": "Review this single checkout screenshot for usability and accessibility issues", "expected": ["design-review"], "cluster": "frontend"},
+    {"prompt": "Save a handoff for a fresh session", "expected": ["handoff"], "explicit": true, "cluster": "explicit-only"},
+    {"prompt": "Run a multi-model ablation to evaluate our AGENTS.md", "expected": ["agents-md-eval"], "explicit": true, "cluster": "explicit-only"},
+    {"prompt": "Explain this function in one sentence", "expected": [], "cluster": "negative"},
+    {"prompt": "Change this button label to Save", "expected": [], "cluster": "negative"}
   ]
 }

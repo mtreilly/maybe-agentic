@@ -1,0 +1,9 @@
+diff --git a/auth.py b/auth.py
+--- a/auth.py
++++ b/auth.py
+@@ -10,5 +10,5 @@ class User:
+ def handle_api_request(user: User, resource: str) -> dict:
+-    if not user.active:
++    if not user.active or user.revoked_at is not None:
+         raise PermissionError('revoked')
+     return {'resource': resource, 'owner': user.user_id}

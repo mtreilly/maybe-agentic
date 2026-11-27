@@ -1,5 +1,5 @@
 {
-  "description": "Core plus evidence, explanation, and writing.",
+  "description": "Core plus codebase explanation, rationale archaeology, decision logs, reflection, writing cleanup, and agent setup evaluation.",
   "extends": [
     "core"
   ],
@@ -8,6 +8,7 @@
     "why",
     "show-me-your-work",
     "reflect",
+    "correct",
     "deslop-writing",
     "skill-doctor",
     "agents-md-eval"

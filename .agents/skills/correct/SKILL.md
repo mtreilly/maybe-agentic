@@ -1,6 +1,6 @@
 ---
 name: correct
-description: Prevent recurring agent or contributor mistakes by changing architecture, types, checks, or automation. Use when the user asks to correct a repeated failure pattern or make an established repository rule enforceable.
+description: Prevent evidenced recurring agent or contributor mistakes by changing architecture, types, checks, or automation. Use when the same mistake class has happened repeatedly across sessions or commits; for enforcing a stated architecture rule or boundary, use architecture-guardrails.
 ---
 
 # Correct recurring mistakes

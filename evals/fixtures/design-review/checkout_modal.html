@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cancel Subscription</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #fff; color: #111; }
+    .modal { max-width: 420px; border: 1px solid #ddd; padding: 20px; }
+    .close-btn { float: right; border: none; background: transparent; cursor: pointer; outline: none; }
+    .error-msg { color: #d6d6d6; font-size: 12px; }
+    .actions { display: flex; gap: 8px; margin-top: 16px; }
+    .btn { padding: 8px 14px; background: #2563eb; color: #fff; border: none; outline: none; }
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <button class="close-btn">✕</button>
+    <h2>Are you sure?</h2>
+    <p>Proceeding will permanently delete your billing history and active workspace immediately.</p>
+    <p class="error-msg">Payment sync failed. Please retry.</p>
+    <div class="actions">
+      <button class="btn">Delete everything</button>
+      <button class="btn">Keep plan</button>
+    </div>
+  </div>
+</body>
+</html>

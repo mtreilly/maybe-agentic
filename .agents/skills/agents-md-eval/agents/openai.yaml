@@ -1,0 +1,5 @@
+interface:
+  display_name: "AGENTS.md Eval"
+  short_description: "Empirical multi-model ablation for AGENTS.md and repo docs"
+policy:
+  allow_implicit_invocation: false

@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "agents-md-eval": {
+      "source": "./skills/agents-md-eval",
+      "sourceType": "local",
+      "computedHash": "0ff15bf5eceaa0d73ee795a0b845162abdd694c7c7b1576055dc62b1e235430c"
+    },
     "animate": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
@@ -19,35 +24,30 @@
       "skillPath": "skills/animation-vocabulary/SKILL.md",
       "computedHash": "0058036865ecbb864fd0c4132efcc62425355d6e99c7e6ef6a936742d62a5dea"
     },
-    "architect": {
-      "source": "./skills",
-      "sourceType": "local",
-      "computedHash": "940bb5c648b79ce7531f76f0523d9bd06e9b0d55cfbf6e90938c516f8058572a"
-    },
     "architecture-guardrails": {
-      "source": "./skills",
+      "source": "./skills/architecture-guardrails",
       "sourceType": "local",
-      "computedHash": "5736091252ef2ed7fa4a70d446df40797d5c2f8dc813cc15670570e97bf20036"
+      "computedHash": "ac1e0e703207a4781a0af04c4fc82a5618444ae16a79088eed8d3a28a19665e7"
     },
     "artifact-integrity": {
-      "source": "./skills",
+      "source": "./skills/artifact-integrity",
       "sourceType": "local",
-      "computedHash": "39369592a95e9b7efad2bfe65a81ae063e2a2f9c87f58f1674974d68efc1afee"
+      "computedHash": "3f29c085e16fa2c86d84ebd27a0764468ee1a282c3f8406a87fec6282b28bf55"
     },
     "automate-me": {
-      "source": "./skills",
+      "source": "./skills/automate-me",
       "sourceType": "local",
-      "computedHash": "63a66db50de22afed9e2fc088ce548c8bd82f5324c68596387527f7fca3ed13e"
+      "computedHash": "7f764ec3e4f672a6b02c63a4d67a9b1471d01b9a451d463fbbfa4c34b80fdb9b"
     },
     "benchmark-checklist": {
-      "source": "./skills",
+      "source": "./skills/benchmark-checklist",
       "sourceType": "local",
-      "computedHash": "52cc1a7037d574899561f9e94f5ef158d6d19e8b43fda818e15968a6d4fab84a"
+      "computedHash": "ac65dfcabff0d753b081ee1629b1e02ffa683fc53fc1d83a8597fb6d453b5aff"
     },
     "blast-radius": {
       "source": "./skills/blast-radius",
       "sourceType": "local",
-      "computedHash": "cfd022921dee3e9578e6332efecf5682536cb23b44f84c7458c652fb6797dd0c"
+      "computedHash": "49de8cb0a02248c5cbac96dc23f9eee4f6db3954005063f610b2184f1f9336c1"
     },
     "break-ui": {
       "source": "emilkowalski/skills",
@@ -58,33 +58,43 @@
     "codebase-design": {
       "source": "./skills/codebase-design",
       "sourceType": "local",
-      "computedHash": "35e5ff792ab05d6756669fb259e046cef5e96af13a3ed1fa22086cdad4b6e2e2"
+      "computedHash": "ed867c7edf18e290722b9e5f5445171a8f6a0330bd4fd280ccf1db3c1130f0fe"
     },
     "correct": {
-      "source": "./skills",
+      "source": "./skills/correct",
       "sourceType": "local",
-      "computedHash": "3c38e15c684cfdb3a03be5e4b43489cd0054ba711bfa847b5d4bdbb56b469cb9"
+      "computedHash": "28b73250ec9915ea90e1561c9b140b0b49deec0c33bc2174b6a2e887cdb5a6a0"
     },
-    "create-verification-skill": {
-      "source": "./skills/create-verification-skill",
+    "db-migrations": {
+      "source": "./skills/db-migrations",
       "sourceType": "local",
-      "computedHash": "9032c3e6bdd8cb6f4e6bc0217b1f0ffb2318f760e175a694bbd7d6ade833d24c"
+      "computedHash": "ee0ab2345d2ec51858a03251708d9bf321069f840a6b591ebffa1502c980765c"
+    },
+    "design-review": {
+      "source": "./skills/design-review",
+      "sourceType": "local",
+      "computedHash": "0d8b49070ec4ccbdba41358301089fdef07fd0feb5c4c004f651a233bbe248e5"
     },
     "deslop-code": {
       "source": "./skills/deslop-code",
       "sourceType": "local",
-      "computedHash": "c08f504eb454ed6d7794efe99616a4b182f1cd6e9be14aedfab9d72fec508136"
+      "computedHash": "ece603d293efeeb12d1b48f3bf7026afb3f0c0b5c8227905062ffd86809584c6"
     },
     "deslop-writing": {
-      "source": "./skills",
+      "source": "./skills/deslop-writing",
       "sourceType": "local",
-      "computedHash": "8a0a8662ae0ae6f7328ecb71f282a0e49b85b55777c1b3e43a3d6ef5d7b493e2"
+      "computedHash": "3fa35fb8013a529e0e8a7d6c44d9955d7070b3a74c6ec6faff200c251364c7aa"
     },
     "emil-design-eng": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
       "skillPath": "skills/emil-design-eng/SKILL.md",
       "computedHash": "51f2537e04d15911b41d78e2de24c36a0e26d41beae15e82a954fe5496a5eda9"
+    },
+    "feature-planning": {
+      "source": "./skills/feature-planning",
+      "sourceType": "local",
+      "computedHash": "4a966d093abe05c19aca19dfe61a9a48b8c371af2cf9143d54b1577156baa7c0"
     },
     "find-animation-opportunities": {
       "source": "emilkowalski/skills",
@@ -95,17 +105,17 @@
     "find-state-machines": {
       "source": "./skills/find-state-machines",
       "sourceType": "local",
-      "computedHash": "a8cdd83da4904decdb5e62d994d6509b3c398b519bd30e6f5bc0fc4973bc82a9"
+      "computedHash": "4e7cdc846c594102b6ea3488e6ef15a27309c6f49199755f96a96f258f6ef9ed"
     },
     "handoff": {
       "source": "./skills/handoff",
       "sourceType": "local",
-      "computedHash": "41c0e56e60df759b4312ef1dca32f874a1a9d5540447f4264a31c78689a4ed7b"
+      "computedHash": "e51db5324120e368db152cfa4947e5dd841c29921b73bec7c9d6ebc12bb9b545"
     },
     "how": {
-      "source": "./skills",
+      "source": "./skills/how",
       "sourceType": "local",
-      "computedHash": "062bfc2d8317bee17c1470bfed7e064f9b6d8e8cbf6ee554c141f7eacd2b481d"
+      "computedHash": "406080550ceb5e04bbe4a1d3e6c4a29168a3ed88275672d65b32b456a0cfaf26"
     },
     "improve-animations": {
       "source": "emilkowalski/skills",
@@ -113,15 +123,15 @@
       "skillPath": "skills/improve-animations/SKILL.md",
       "computedHash": "524ea241e41d58bbdd8e288700fe24f5725e2a2f3ae7186ad7cebf9055058356"
     },
+    "incident-triage": {
+      "source": "./skills/incident-triage",
+      "sourceType": "local",
+      "computedHash": "ab1e3cee6b914be216bd9dbb6d637bd8496fad779ea0a3bb124c9b68b1f5585e"
+    },
     "interrogate": {
       "source": "./skills/interrogate",
       "sourceType": "local",
-      "computedHash": "b506508fe3c2a655394fffdca078d27597cad169b284512c4e918c6f60f5a4cd"
-    },
-    "maintain-verification-skill": {
-      "source": "./skills",
-      "sourceType": "local",
-      "computedHash": "97283a825eda784f8632e76f4920a33065b3ea17bafd37b7f1d9d69fa77b3324"
+      "computedHash": "60b558ca4c22a9197b59c51d35347a77892bc8bc5841e0c1f03155f6d0b3acfe"
     },
     "mobile-native": {
       "source": "emilkowalski/skills",
@@ -130,14 +140,14 @@
       "computedHash": "f221cea36642168df6d3d6d7f236237cbf1ae669138ff7df07775674223d49ad"
     },
     "poteto-mode": {
-      "source": "./skills",
+      "source": "./skills/poteto-mode",
       "sourceType": "local",
-      "computedHash": "cf811ac862826e9ea44be26a98d60a91d67676c2e867f29ed25de1b2317a9c27"
+      "computedHash": "ddce36e1d2a9eb8e9c925c9e478475a8359bc88d6111d4d26c86f76fbdc44328"
     },
     "project-quality-setup": {
       "source": "./skills/project-quality-setup",
       "sourceType": "local",
-      "computedHash": "9d4faf9f4c75f348dadc6c5556d17cc327f54a8ff5fdcfa72f74b883a90fac2e"
+      "computedHash": "30979c2ce15a92932d0d671b61a6ba18bc2722af6d5e85893c388d227de49eaf"
     },
     "prototype": {
       "source": "emilkowalski/skills",
@@ -145,15 +155,20 @@
       "skillPath": "skills/prototype/SKILL.md",
       "computedHash": "77be567d8c946608fdd15e61b62ab383cdf289a194dce2479828b7eda860d3ba"
     },
+    "prune-tests": {
+      "source": "./skills/prune-tests",
+      "sourceType": "local",
+      "computedHash": "8160b8b4077f3e0dc94edc1608c1141f001ef50cd773d658ab074d937196f13b"
+    },
     "quality-gate-audit": {
       "source": "./skills/quality-gate-audit",
       "sourceType": "local",
-      "computedHash": "6c124c73e2c641154f4ee693dc87c592b59d1f0672650a1ea8fddcf4633c216c"
+      "computedHash": "7db7bf998aff86ef9711c0ec9dfdcf2e94c5c8a9d50e95015e06a318e352fec6"
     },
     "reflect": {
-      "source": "./skills",
+      "source": "./skills/reflect",
       "sourceType": "local",
-      "computedHash": "3c48621bf3a9e268a55786871e8312e678e6ac9a3d350cbe09bf467081847ac3"
+      "computedHash": "46d868c05d23431c629621ba27a456c4aaca19a09ebfcbb84b95ed3943dc121f"
     },
     "review-animations": {
       "source": "emilkowalski/skills",
@@ -168,9 +183,9 @@
       "computedHash": "98b97aad2873b3b9a8e064007c25e7827b493ba27fda8bfbdb41dab586767973"
     },
     "show-me-your-work": {
-      "source": "./skills",
+      "source": "./skills/show-me-your-work",
       "sourceType": "local",
-      "computedHash": "f6e1bf518670ec005a8f9c0db3065325daaba3d9edf28c7e46140c78c9022931"
+      "computedHash": "722e801ec16f0c1f15cbcc4ac3de3099409500bd6d9776b927e4cb6405f28ae2"
     },
     "skill-doctor": {
       "source": "warpdotdev/common-skills",
@@ -178,35 +193,50 @@
       "skillPath": ".agents/skills/skill-doctor/SKILL.md",
       "computedHash": "30931b68b6fe24705073e0f2a720df286974e9dd097e837e099372e85764a878"
     },
+    "statechart": {
+      "source": "./skills/statechart",
+      "sourceType": "local",
+      "computedHash": "badd36652431c029c8d0cc402c7761fac32e8c5f71d4f7f576bbaad3d9858752"
+    },
     "systematic-debugging": {
       "source": "./skills/systematic-debugging",
       "sourceType": "local",
-      "computedHash": "e644aac51375b3aa04d3d109de927bdc66a3e8856e75998208507abeb57e703b"
+      "computedHash": "49f2935a789f18ae0b290ebb0e052bfb925b147389c2b5c4e545d2f355305f86"
     },
     "teach": {
       "source": "./skills/teach",
       "sourceType": "local",
-      "computedHash": "163d6ffde14d6016f51ba4f70e335c43a0b639771411c38fc127f6bb43948d98"
+      "computedHash": "74e3811f5ab8d14f9ac81a7a0a471d1594e13dac8340d5f1a1d5068f4aa5a610"
+    },
+    "test-design": {
+      "source": "./skills/test-design",
+      "sourceType": "local",
+      "computedHash": "a20ac474a665890c5d117a9da6bc6dd9b8a87de7d4c5bc0c481643b096570b6b"
     },
     "ui-performance": {
       "source": "./skills/ui-performance",
       "sourceType": "local",
-      "computedHash": "d25818ededd1f2ee5fd51cc24d15b935d563857bbb9805dddc207a6d9cd11b0c"
+      "computedHash": "4be317eb0b8f1e8e0277e848f0fe0e9847b22a88384ec68f4ddab777dbabb410"
     },
     "untangle-codebase": {
       "source": "./skills/untangle-codebase",
       "sourceType": "local",
-      "computedHash": "580c1c6c70193c648cc16a9fdea5541c3707f9be1a8b7421e46fe6fc46b39c6b"
+      "computedHash": "2cb6d5b59f19e44493fca3870e122f1cdf6295036069aff660bf8322bd10ec6b"
+    },
+    "verification-skill": {
+      "source": "./skills/verification-skill",
+      "sourceType": "local",
+      "computedHash": "65a33e702a130565b1ff4df39fd32c141af8045a27d5b8b93b5be19f95c558a3"
     },
     "wait-what": {
       "source": "./skills/wait-what",
       "sourceType": "local",
-      "computedHash": "b3e34688004e12336504b210fc35e288fde4451d2596fbae9d68c37b314f2f8b"
+      "computedHash": "f41bf11ec931ba3c93aef84d892989227ebdcf148c28f38f2b1cf0ffa5ccea98"
     },
     "why": {
-      "source": "./skills",
+      "source": "./skills/why",
       "sourceType": "local",
-      "computedHash": "822e57855cf08308ba70fee17cb9cfc340c3f17fadcdb3426fbd7801ee7b7588"
+      "computedHash": "d5a666d1415b8528fabb945eaa375305da5bf1d1b656b2cb3d87f076b3f5a35e"
     },
     "write-swift": {
       "source": "emilkowalski/skills",
