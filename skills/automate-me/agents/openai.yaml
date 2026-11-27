@@ -1,0 +1,5 @@
+interface:
+  display_name: "Automate Me"
+  short_description: "Capture or update a personal agent working-style skill"
+policy:
+  allow_implicit_invocation: false

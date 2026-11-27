@@ -5,7 +5,7 @@ description: Prune or rewrite low-value tests while preserving regression covera
 
 # Prune tests
 
-Use `$prune-tests [optional path]` to review tests in the requested scope. Run the affected tests before editing so you can recognize existing failures.
+Review tests in the requested path or scope. Run the affected tests before editing so you can recognize existing failures.
 
 For each candidate, ask **what plausible production change would break intended behavior and make this test fail?** Trace the inputs, execution path, and assertions. Check which behavior a caller relies on, including forbidden outcomes and observable side effects.
 

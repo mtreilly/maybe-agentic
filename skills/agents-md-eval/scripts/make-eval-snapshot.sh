@@ -9,7 +9,7 @@ Usage: make-eval-snapshot.sh --repo <path> --out <dir> [--ref <git-ref>] [--mode
 
 Options:
   --repo <path>              Path to git repository checkout (required)
-  --out <dir>                Output directory outside the repo, e.g. /tmp/agents-md-eval-app (required)
+  --out <dir>                Fresh output directory outside the repo, e.g. "${TMPDIR:-/tmp}/agents-md-eval-app" (required)
   --ref <git-ref>            Git ref to archive (default: HEAD)
   --mode <both|with|without> Which snapshot arms to materialize (default: both)
   --strip-secondary-agents   Also remove .agents/ from the "without" arm (default: keep .agents/ & docs/)
@@ -48,8 +48,8 @@ REPO_ABS="$(cd "$REPO" && pwd -P)"
 git -C "$REPO_ABS" rev-parse --verify "$REF^{commit}" >/dev/null
 COMMIT_SHA="$(git -C "$REPO_ABS" rev-parse --short "$REF")"
 
-mkdir -p "$OUT"
-OUT_ABS="$(cd "$OUT" && pwd -P)"
+# Resolve OUT without mutating the filesystem first so overlap checks happen before any write.
+OUT_ABS="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$OUT")"
 
 case "$OUT_ABS" in
   "$REPO_ABS"|"$REPO_ABS"/*)
@@ -58,10 +58,30 @@ case "$OUT_ABS" in
     ;;
 esac
 
+# Validate every requested arm directory before creating or writing anything.
+arms=()
+if [[ "$MODE" == "both" || "$MODE" == "with" ]]; then arms+=(with); fi
+if [[ "$MODE" == "both" || "$MODE" == "without" ]]; then arms+=(without); fi
+
+for arm in "${arms[@]}"; do
+  dest="$OUT_ABS/$arm"
+  case "$REPO_ABS" in
+    "$dest"|"$dest"/*)
+      echo "Refusing to target a snapshot path that contains or equals the repository ($dest)." >&2
+      exit 2
+      ;;
+  esac
+  if [[ -e "$dest" || -L "$dest" ]]; then
+    echo "Refusing to overwrite existing snapshot directory: $dest (use a fresh --out directory)." >&2
+    exit 2
+  fi
+done
+
+mkdir -p "$OUT_ABS"
+
 materialize() {
   local arm="$1"
   local dest="$OUT_ABS/$arm"
-  rm -rf "$dest"
   mkdir -p "$dest"
   git -C "$REPO_ABS" archive "$REF" | tar -x -C "$dest"
 
@@ -69,7 +89,7 @@ materialize() {
   rm -rf "$dest/.git"
 
   if [[ "$arm" == "without" ]]; then
-    # Strip root and nested AGENTS.md / CLAUDE.md plus IDE/agent instruction folders
+    # Strip root and nested AGENTS.md / CLAUDE.md / GEMINI.md plus IDE instruction folders
     find "$dest" -type f \( -name 'AGENTS.md' -o -name 'CLAUDE.md' -o -name 'GEMINI.md' \) -delete
     rm -rf "$dest/.claude" "$dest/.cursor" "$dest/.cursorrules"
     if [[ "$STRIP_DOT_AGENTS" -eq 1 ]]; then
@@ -97,9 +117,6 @@ materialize() {
 }
 
 echo "Created isolated eval snapshot(s) from $REPO_ABS ($REF @ $COMMIT_SHA):"
-if [[ "$MODE" == "both" || "$MODE" == "with" ]]; then
-  materialize "with"
-fi
-if [[ "$MODE" == "both" || "$MODE" == "without" ]]; then
-  materialize "without"
-fi
+for arm in "${arms[@]}"; do
+  materialize "$arm"
+done

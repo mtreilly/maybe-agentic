@@ -1,6 +1,6 @@
 ---
 name: project-quality-setup
-description: Recommend or implement a proportionate code-quality setup after inspecting a project’s stack, existing checks, and failure risks. Use for baseline tooling, missing quality gates, or standardizing project check commands.
+description: Recommend or implement missing baseline code-quality tooling and standardized check commands after inspecting a project's stack and failure risks. Use when setting up baseline lint, type, or test checks; to investigate false passes or drift in existing gates, use quality-gate-audit.
 ---
 
 # Set up project quality checks

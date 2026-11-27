@@ -1,6 +1,7 @@
 ---
 name: poteto-mode
-description: Apply the locally adapted pstack engineering workflow when the user requests poteto-mode or explicitly asks to work in that style. Select a task-sized playbook with concrete completion evidence, simple design, and scoped autonomy.
+description: Apply the locally adapted pstack engineering workflow when the user explicitly requests poteto-mode or asks to work in that style. Select a task-sized playbook with concrete completion evidence, simple design, and scoped autonomy.
+disable-model-invocation: true
 ---
 
 # Poteto mode, portable edition
@@ -15,7 +16,7 @@ Ground the work in real behavior and ownership. Derive domain data and interface
 
 ## Engineering judgment
 
-- Prefer the smallest coherent change. Delete unnecessary work and obsolete paths when compatibility and scope permit it.
+- Prefer the smallest coherent change. Delete unnecessary work and obsolete paths when compatibility and scope permit it. Raise quality by testing the riskiest assumption early and proving the real path, not by expanding scope or adding artifacts.
 - Keep state ownership clear. Parse external data at boundaries and preserve internal invariants. Do not add defensive layers solely to silence an unexplained failure.
 - Prefer types, checks, and repeatable scripts to reminders for recurring mistakes.
 - Measure the actual workload before claiming an optimization. Confirm timed work and correct output, compare fair configurations, and distinguish improvements from noise.

@@ -87,7 +87,7 @@ When the model describes code, replay each bug path against the real code, as a 
 
 ## Maintenance
 
-The bundled engine, tests, and fixtures are retained from upstream. For engine changes, run the relevant tests from `scripts/` with `npm test` after installing its development dependencies in an isolated copy. On Node 23, use `NODE_OPTIONS=--disable-warning=ExperimentalWarning npm test` so child processes do not add TypeScript warnings to stderr assertions. Live TLC tests require `TLA2TOOLS` and Java. Rendering tests also install pinned npm packages in the user cache. Keep dependencies and generated model output outside the maintained skill source.
+The bundled engine is retained from upstream; the regression tests and corpus live outside the installable skill bundle under `tests/statechart-engine-test/`. For engine changes, run the relevant tests from `scripts/` with `npm test` after installing its development dependencies in an isolated copy. On Node 23, use `NODE_OPTIONS=--disable-warning=ExperimentalWarning npm test` so child processes do not add TypeScript warnings to stderr assertions. Live TLC tests require `TLA2TOOLS` and Java. Rendering tests also install pinned npm packages in the user cache. Keep dependencies and generated model output outside the maintained skill source.
 
 ## Attribution
 

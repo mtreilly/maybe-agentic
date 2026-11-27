@@ -1,6 +1,6 @@
 ---
 name: interrogate
-description: Adversarially review a specified change or design against its intent and synthesize actionable findings. Use for requests to challenge an approach, find blind spots, or conduct independent code review; review does not automatically authorize fixes.
+description: Adversarially review a proposed design, approach, or diff against its stated intent to uncover flawed assumptions and correctness defects. Use to challenge an approach or conduct independent review; for downstream compatibility and lifecycle impact beyond the diff, use blast-radius. Review does not authorize fixes.
 ---
 
 # Challenge the change

@@ -47,4 +47,4 @@ A review request produces findings. Apply fixes only when requested. Keep the re
 
 ## Attribution
 
-Adapted from Lauren Tan's pstack `blast-radius`, cursor/plugins commit `e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a`. History lookup, evidence calibration, and reporting are included locally. The lifecycle reference is locally authored from observed SchoolMIS review patterns; its examples do not impose SchoolMIS-specific architecture on other projects. See [LICENSE.txt](LICENSE.txt).
+Adapted from Lauren Tan's pstack `blast-radius`, cursor/plugins commit `e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a`. History lookup, evidence calibration, and reporting are included locally. The lifecycle reference is locally authored from observed multi-tenant application review patterns; its examples do not impose a specific domain architecture on other projects. See [LICENSE.txt](LICENSE.txt).

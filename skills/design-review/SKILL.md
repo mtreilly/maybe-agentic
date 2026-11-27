@@ -39,6 +39,23 @@ Consult authoritative references when making precise standards claims. Cite the 
 
 Avoid generic feedback, subjective stylistic preferences, unnecessary redesigns, and arbitrary numerical rules. Do not equate minimalism with usability or visual attractiveness with effectiveness. Preserve strong existing decisions and respect product constraints. Treat cognitive effects as context-dependent explanations, not universal laws proving a predicted outcome.
 
+## Choose review depth
+
+Scale the output to the supplied artifact rather than forcing a 14-lens report onto a single screenshot:
+
+- **Quick mode (default for a single screen, isolated component, or static screenshot):** Evaluate only the lenses supported by the supplied artifact (typically visual hierarchy, usability/affordance, accessibility, content, visual craft, and resilience). Keep explicit evidence labels (**Verified observation**, **Assumption**, **Hypothesis**, **Not evaluated**), output a concise prioritized findings list with severities and strengths to preserve, and state which lenses were omitted due to medium limits.
+- **Full mode (multi-screen flows, live prototypes, or explicit comprehensive/14-lens reviews):** Run all 14 lenses and produce the full scorecard and closing sections below.
+
+## Live accessibility verification
+
+When inspecting a live interface or interactive prototype, go beyond static contrast checks and exercise real interaction paths where browser tools permit:
+
+- **Keyboard-only navigation:** Tab and Shift+Tab through every interactive control; verify visible focus rings, logical DOM/visual focus order, Escape-to-dismiss, and focus return to the trigger when closing modals, drawers, or popovers. Confirm zero unintended keyboard traps.
+- **Semantics and accessible names:** Inspect roles, labels, landmarks, headings, error associations (`aria-describedby` / `aria-invalid`), and live status announcements (`aria-live`) in the accessibility tree.
+- **Reflow and preferences:** Check 200% zoom or 320px mobile width for horizontal overflow/clipping, and verify `prefers-reduced-motion` softens or removes non-essential movement.
+
+Record which live checks were actually executed versus inferred from source or screenshots; never claim WCAG conformance from partial inspection alone.
+
 ## Evaluate all 14 lenses
 
 Evaluate each lens independently. Use the prompts below to direct inspection, not to assert that unavailable behaviour exists.
