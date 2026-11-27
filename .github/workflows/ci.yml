@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run toolkit and eval unit tests
+        run: python3 -B -m unittest discover -s tests -v
+      - name: Run local doctor across all profiles
+        run: ./doctor.sh --local --profile all
+      - name: Verify setup dry-run and catalog parsing
+        run: |
+          bash ./setup.sh --dry-run >/dev/null
+          bash ./setup.sh --dry-run --profile all >/dev/null
+      - name: Validate routing cases
+        run: python3 -B evals/run.py routing
+      - name: Check setup plugin syntax
+        run: node --check plugins/maybe-agentic-setup/index.js

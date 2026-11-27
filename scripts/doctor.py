@@ -14,7 +14,63 @@ from catalog import ROOT, manifest, select
 AGENTS = {'codex': '.agents', 'opencode': '.agents', 'claude-code': '.claude', 'pi': '.pi'}
 
 
-def skill_checks(directory, name):
+def parse_frontmatter(block):
+    """Parse flat YAML frontmatter including folded/literal multiline scalars."""
+    fields = {}
+    errors = []
+    lines = block.splitlines()
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        if not line.strip() or line.lstrip().startswith('#'):
+            index += 1
+            continue
+        if line[0] in ' \t':
+            errors.append(f'unexpected indentation in frontmatter: {line.strip()!r}')
+            index += 1
+            continue
+        match = re.match(r'^([\w-]+):(?:[ \t]+(.*)|[ \t]*)$', line)
+        if not match:
+            errors.append(f'malformed frontmatter line: {line!r}')
+            index += 1
+            continue
+        key, raw = match.group(1), (match.group(2) or '').strip()
+        if raw in ('>', '>-', '|', '|-'):
+            collected = []
+            index += 1
+            while index < len(lines):
+                nxt = lines[index]
+                if nxt == '' or nxt[0] in ' \t':
+                    collected.append(nxt.strip())
+                    index += 1
+                else:
+                    break
+            joiner = '\n' if raw.startswith('|') else ' '
+            fields[key] = joiner.join(part for part in collected if part).strip()
+            continue
+        if (raw.startswith('"') and not raw.endswith('"')) or (raw.startswith("'") and not raw.endswith("'")):
+            errors.append(f'unterminated quoted value for frontmatter key {key!r}')
+        elif len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in ('"', "'"):
+            raw = raw[1:-1]
+        fields[key] = raw.strip()
+        index += 1
+    return fields, errors
+
+
+def is_executable_entrypoint(path):
+    """Return True if a file under scripts/ should have the executable bit set."""
+    if path.suffix == '.sh':
+        return True
+    if path.suffix == '':
+        return True
+    try:
+        head = path.read_bytes()[:64]
+    except OSError:
+        return False
+    return head.startswith(b'#!')
+
+
+def skill_checks(directory, name, local_source=False):
     issues = []
     file = directory / 'SKILL.md'
     if not file.is_file():
@@ -23,12 +79,31 @@ def skill_checks(directory, name):
     header = re.match(r'\A---\r?\n(.*?)\r?\n---(?:\r?\n|$)', text, re.S)
     if not header:
         return [f'{name}: SKILL.md requires YAML frontmatter']
-    fields = dict(re.findall(r'^([\w-]+):[ \t]*(.*)$', header.group(1), re.M))
-    if fields.get('name', '').strip('"\' ') != name:
+    fields, fm_errors = parse_frontmatter(header.group(1))
+    for error in fm_errors:
+        issues.append(f'{name}: {error}')
+    if fields.get('name', '') != name:
         issues.append(f'{name}: frontmatter name does not match directory')
     description = fields.get('description', '').strip()
-    if not description or description in ['""', "''"]:
+    if not description:
         issues.append(f'{name}: missing description')
+    # Check invocation-policy parity between SKILL.md and agents/openai.yaml on local sources.
+    if local_source:
+        disable_model = fields.get('disable-model-invocation', '').lower() == 'true'
+        openai_yaml = directory / 'agents' / 'openai.yaml'
+        openai_disables = False
+        if openai_yaml.is_file():
+            openai_text = openai_yaml.read_text()
+            openai_disables = bool(re.search(r'^\s*allow_implicit_invocation:\s*false\b', openai_text, re.M | re.I))
+        if disable_model and not openai_disables:
+            issues.append(f'{name}: disable-model-invocation is true but agents/openai.yaml does not set allow_implicit_invocation: false')
+        elif openai_disables and not disable_model:
+            issues.append(f'{name}: agents/openai.yaml sets allow_implicit_invocation: false but SKILL.md omits disable-model-invocation: true')
+        scripts_dir = directory / 'scripts'
+        if scripts_dir.is_dir():
+            for script in sorted(scripts_dir.iterdir()):
+                if script.is_file() and is_executable_entrypoint(script) and not os.access(script, os.X_OK):
+                    issues.append(f'{name}: script is not executable: scripts/{script.name}')
     # Check local Markdown resource links, not prose/backticks or external URLs.
     for document in directory.rglob('*.md'):
         for target in re.findall(r'\]\((<[^>]+>|[^\s)]+)(?:\s+[^)]*)?\)', document.read_text()):
@@ -45,6 +120,25 @@ def skill_checks(directory, name):
 
 def files(directory):
     return {str(file.relative_to(directory)): file.read_bytes() for file in directory.rglob('*') if file.is_file()}
+
+
+def lock_entry_issues(name, entry, declared_source, scope):
+    issues = []
+    if not isinstance(entry, dict):
+        return [f'{name}: invalid {scope} lockfile entry']
+    source = entry.get('source')
+    if not isinstance(source, str) or not source.strip():
+        issues.append(f'{name}: {scope} lockfile entry missing source')
+    elif declared_source.startswith('./'):
+        if scope == 'local' and not (source == declared_source or source == './skills'):
+            issues.append(f'{name}: {scope} lockfile source {source!r} does not match manifest {declared_source!r}')
+    else:
+        if source != declared_source:
+            issues.append(f'{name}: {scope} lockfile source {source!r} does not match manifest {declared_source!r}')
+    digest = entry.get('computedHash') or entry.get('skillFolderHash')
+    if not isinstance(digest, str) or not re.fullmatch(r'[0-9a-fA-F]{40,64}', digest):
+        issues.append(f'{name}: {scope} lockfile entry has missing or invalid hash')
+    return issues
 
 
 def paths(scope):
@@ -100,16 +194,19 @@ def check(profiles, agents, scope):
             errors.append(f'missing {scope} lockfile: {lock_path}')
     for name, source in entries.items():
         if source.startswith('./'):
-            errors.extend(skill_checks(ROOT / source, name))
+            errors.extend(skill_checks(ROOT / source, name, local_source=True))
     installed = {entry.name for entry in canonical.iterdir()} if canonical.is_dir() else set()
     unmanaged = sorted(installed - set(entries))
+    if scope == 'global' and unmanaged:
+        preview = ', '.join(unmanaged[:5]) + (f' and {len(unmanaged) - 5} more' if len(unmanaged) > 5 else '')
+        warnings.append(f'{len(unmanaged)} unmanaged installed skill(s) outside skills.txt may compete for routing: {preview}')
     for name in sorted(installed & set(entries)):
         directory = canonical / name
         info = candidate(directory)
         if info['state'] != 'present':
             errors.append(f'{name}: broken canonical skill or unexpected file')
             continue
-        errors.extend(skill_checks(directory, name))
+        errors.extend(skill_checks(directory, name, local_source=False))
         if entries[name].startswith('./') and files(ROOT / entries[name]) != files(directory):
             errors.append(f'{name}: installed copy differs from maintained source; refresh {scope} setup')
     resolutions = {agent: {} for agent in agents}
@@ -118,8 +215,11 @@ def check(profiles, agents, scope):
             errors.append(f'{name}: selected skill is not installed in {scope} scope')
         # CLI 1.7.0 records global remote sources, but intentionally omits
         # local-source installs. Their installed bytes are compared above.
-        if name not in locked and (scope == 'local' or not selected[name].startswith('./')):
-            errors.append(f'{name}: missing {scope} lockfile entry')
+        if name not in locked:
+            if scope == 'local' or not selected[name].startswith('./'):
+                errors.append(f'{name}: missing {scope} lockfile entry')
+        else:
+            errors.extend(lock_entry_issues(name, locked[name], selected[name], scope))
         expected = candidate(canonical / name)
         for agent in agents:
             installation = candidate(roots[agent] / name)

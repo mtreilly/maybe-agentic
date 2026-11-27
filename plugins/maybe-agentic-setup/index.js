@@ -95,7 +95,7 @@ export function apply(ctx, config = {}) {
       ctx.tools.register({
         name: 'agentic_setup_status',
         description:
-          'Check the maybe-agentic agent setup: whether skills declared in skills.txt are installed, whether the profile files reference known skills, whether the client skill links are intact, and whether the MCP servers in mcp/servers.json are usable. Use when the user asks about their agent setup, skill drift, or a skill that should exist but does not.',
+          'Check the maybe-agentic agent setup: whether core and profile skills declared in skills.txt are installed, whether profile files parse cleanly and reference known skills, whether client skill links are intact, and whether MCP servers in mcp/servers.json have their required local paths present. Use when the user asks about their agent setup, skill drift, or a skill that should exist but does not.',
         parameters: {
           refresh: {
             type: 'boolean',
@@ -156,17 +156,38 @@ async function collect(repoPath) {
   const declared = manifest.names
   const installedNames = new Set(installed.names)
   const declaredSet = new Set(declared)
+  const coreProfile = profileFiles.find((profile) => profile.name === 'core' && !profile.invalid)
+  const coreSet = new Set(coreProfile ? coreProfile.skills : [])
+  const missingCore = [...coreSet].filter((skill) => declaredSet.has(skill) && !installedNames.has(skill))
   const missing = declared.filter((skill) => !installedNames.has(skill))
   const extra = installed.names.filter((skill) => !declaredSet.has(skill))
 
-  if (repo.exists && missing.length > 0) {
+  if (repo.exists && missingCore.length > 0) {
     issues.push({
       level: 'error',
-      text: `${missing.length} declared skill${missing.length === 1 ? ' is' : 's are'} not installed: ${preview(missing)}`,
+      text: `${missingCore.length} core skill${missingCore.length === 1 ? ' is' : 's are'} not installed: ${preview(missingCore)}`,
+    })
+  } else if (repo.exists && missing.length > 0) {
+    issues.push({
+      level: 'warn',
+      text: `${missing.length} optional manifest skill${missing.length === 1 ? ' is' : 's are'} not installed (core is complete): ${preview(missing)}`,
     })
   }
 
   const profiles = profileFiles.map((profile) => {
+    if (profile.invalid) {
+      issues.push({
+        level: 'error',
+        text: `Profile "${profile.name}" could not be parsed: ${profile.error}`,
+      })
+      return {
+        name: profile.name,
+        extends: [],
+        skillCount: 0,
+        unknown: [],
+        invalid: true,
+      }
+    }
     const unknown = profile.skills.filter((skill) => !declaredSet.has(skill))
     const notInstalled = profile.skills.filter((skill) => !installedNames.has(skill))
     if (unknown.length > 0) {
@@ -344,17 +365,26 @@ async function readProfiles(repoPath) {
   }
   const profiles = []
   for (const file of entries.filter((entry) => entry.endsWith('.json')).sort()) {
+    const name = file.replace(/\.json$/, '')
     try {
       const parsed = JSON.parse(await readFile(path.join(dir, file), 'utf8'))
-      const skills = Array.isArray(parsed.skills) ? parsed.skills.filter((s) => typeof s === 'string') : []
-      const parents = Array.isArray(parsed.extends)
-        ? parsed.extends
-        : typeof parsed.extends === 'string'
-          ? [parsed.extends]
-          : []
-      profiles.push({ name: file.replace(/\.json$/, ''), extends: parents, skills })
-    } catch {
-      profiles.push({ name: file.replace(/\.json$/, ''), extends: [], skills: [] })
+      if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        profiles.push({ name, extends: [], skills: [], invalid: true, error: 'root value must be a JSON object' })
+        continue
+      }
+      if (parsed.skills !== undefined && (!Array.isArray(parsed.skills) || parsed.skills.some((s) => typeof s !== 'string'))) {
+        profiles.push({ name, extends: [], skills: [], invalid: true, error: 'skills must be an array of strings' })
+        continue
+      }
+      if (parsed.extends !== undefined && (!Array.isArray(parsed.extends) || parsed.extends.some((s) => typeof s !== 'string'))) {
+        profiles.push({ name, extends: [], skills: [], invalid: true, error: 'extends must be an array of strings' })
+        continue
+      }
+      const skills = Array.isArray(parsed.skills) ? parsed.skills : []
+      const parents = Array.isArray(parsed.extends) ? parsed.extends : []
+      profiles.push({ name, extends: parents, skills, invalid: false })
+    } catch (error) {
+      profiles.push({ name, extends: [], skills: [], invalid: true, error: describeError(error) })
     }
   }
   return profiles

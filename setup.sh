@@ -17,7 +17,7 @@ Usage: ./setup.sh [--global | --local] [--profile NAME]... [--skill NAME]... [--
 Install selected skills globally for the current user using Vercel's skills CLI.
 Default agents: codex, claude-code, opencode, pi.
 
-  --profile NAME  Select core (default), frontend, backend, research, or all. Repeat to combine.
+  --profile NAME  Select core (default), frontend, backend, mobile, research, personal, or all. Repeat to combine.
   --skill NAME  Select a manifest skill; repeat for several. Filters profiles when supplied.
   --agent NAME  Select an agent; repeat to select several.
   --global      Install, update, and list user-level skills (default).
@@ -72,7 +72,7 @@ export DO_NOT_TRACK=1
 
 # Validate the entire selection before any CLI invocation; no partial installation
 # when a profile is malformed. Command substitution preserves parser exit status.
-selection="$(python3 -B "$repo_dir/scripts/catalog.py" "${profiles[@]}" "${skills[@]}")"
+selection="$(python3 -B "$repo_dir/scripts/catalog.py" ${profiles[@]+"${profiles[@]}"} ${skills[@]+"${skills[@]}"})"
 
 run() {
   if "$dry_run"; then
