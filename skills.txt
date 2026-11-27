@@ -45,3 +45,4 @@ cloudflare/security-audit-skill security-audit
 ./skills/plain-voice plain-voice
 ./skills/raise-the-bar raise-the-bar
 ./skills/jira-qa jira-qa
+./skills/design-review design-review

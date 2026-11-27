@@ -16,6 +16,7 @@
     "untangle-codebase",
     "find-state-machines",
     "statechart",
-    "jira-qa"
+    "jira-qa",
+    "design-review"
   ]
 }
